@@ -2,7 +2,7 @@ package Cargos.Factory;
 
 import Cargos.MaterialCargo;
 
-public class MaterialArgs implements VehicleArgsFor<MaterialCargo> {
+public class MaterialArgs implements CargoArgsFor<MaterialCargo> {
     private double weight;
 
     public MaterialArgs(double weight) {

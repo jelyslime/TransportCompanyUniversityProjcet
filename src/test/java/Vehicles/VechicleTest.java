@@ -1,8 +1,6 @@
-package Vechicles;
+package Vehicles;
 
 import utility.TRANSPORT_TYPE;
-import Vehicles.VEHICLE_TYPE;
-import Vehicles.Vehicle;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;

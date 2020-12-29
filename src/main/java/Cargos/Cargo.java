@@ -9,16 +9,9 @@ public abstract class Cargo implements CargoNecessaryInformation {
         this.type = type;
     }
 
-    public Cargo() {
-        this.type = TRANSPORT_TYPE.PRODUCT;
-    }
 
     public TRANSPORT_TYPE getType() {
         return type;
-    }
-
-    public void setType(TRANSPORT_TYPE type) {
-        this.type = type;
     }
 
 

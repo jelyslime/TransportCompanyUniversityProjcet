@@ -1,7 +1,5 @@
-package Vechicles;
+package Vehicles;
 
-
-import Vehicles.VechiclesIdCounterSingleton;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

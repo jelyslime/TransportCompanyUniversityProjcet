@@ -5,17 +5,17 @@ import utility.TRANSPORT_TYPE;
 public class MaterialCargo extends Cargo {
     private double CargoWeight;
 
-    public MaterialCargo() {
+    protected MaterialCargo() {
         super(TRANSPORT_TYPE.PRODUCT);
         this.CargoWeight = 0;
     }
 
-    public MaterialCargo(double cargoWeight) {
+    protected MaterialCargo(double cargoWeight) {
         super(TRANSPORT_TYPE.PRODUCT);
         CargoWeight = cargoWeight;
     }
 
-    public MaterialCargo(TRANSPORT_TYPE type, double cargoWeight) {
+    protected MaterialCargo(TRANSPORT_TYPE type, double cargoWeight) {
         super(type);
         CargoWeight = cargoWeight;
     }

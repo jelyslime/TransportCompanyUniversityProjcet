@@ -5,7 +5,7 @@ import Persons.Person;
 
 import java.util.ArrayList;
 
-public class PeopleArgs implements VehicleArgsFor<PeoplesCargo> {
+public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
     private ArrayList<Person> personArrayList;
 
     public PeopleArgs(ArrayList<Person> personArrayList) {
