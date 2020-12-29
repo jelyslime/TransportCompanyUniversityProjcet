@@ -2,6 +2,13 @@ package Cargos.Factory;
 
 import Cargos.MaterialCargo;
 
+/**
+ * Concrete implementation of interface CargoArgsFor, used by CargoFactory to store parameters for MaterialCargo.
+ *
+ * @see Cargos.Factory.CargoArgsFor
+ * @see Cargos.CargoFactory
+ * @see MaterialCargo
+ */
 public class MaterialArgs implements CargoArgsFor<MaterialCargo> {
     private double weight;
 

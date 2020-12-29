@@ -10,11 +10,19 @@ import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
 
+/**
+ * Unit tests for PeoplesCargo
+ *
+ * @see PeoplesCargo
+ */
 @RunWith(JUnit4.class)
 public class PeoplesCargoTest {
-    private ArrayList<Person> EXPECTED_LIST = new ArrayList<>();
-    private TRANSPORT_TYPE EXPECTED_TYPE = TRANSPORT_TYPE.PASSENGER;
+    private final ArrayList<Person> EXPECTED_LIST = new ArrayList<>();
+    private final TRANSPORT_TYPE EXPECTED_TYPE = TRANSPORT_TYPE.PASSENGER;
 
+    /**
+     * This test checks if all argument constructor works as expected.
+     */
     @Test
     public void allArgsConstructor_CreateInstance_ValidArguments() {
         //arrange & act
@@ -25,6 +33,9 @@ public class PeoplesCargoTest {
         assertEquals(EXPECTED_TYPE, cargo.getCargoType());
     }
 
+    /**
+     * This test checks if constructor only with double value works as expected.
+     */
     @Test
     public void oneParamConstructor_CreateInstance_ValidArguments() {
         //arrange & act
@@ -35,6 +46,9 @@ public class PeoplesCargoTest {
         assertEquals(EXPECTED_TYPE, cargo.getType());
     }
 
+    /**
+     * This test checks if no arguments constructor works as expected.
+     */
     @Test
     public void noArgsConstructor_CreateInstance() {
         //arrange & act
@@ -45,6 +59,9 @@ public class PeoplesCargoTest {
         assertEquals(EXPECTED_TYPE, cargo.getType());
     }
 
+    /**
+     * This test checks if setPersons works as expected.
+     */
     @Test
     public void setPersons_ModifyPersonList() {
         //arrange
@@ -58,6 +75,9 @@ public class PeoplesCargoTest {
         assertEquals(newExpectedWeight, cargo.getPersons());
     }
 
+    /**
+     * This test checks if implemented method getNecessaryInformation works as expected.
+     */
     @Test
     public void getNecessaryInformation_returnPersonListSize() {
         //arrange & act
@@ -67,6 +87,9 @@ public class PeoplesCargoTest {
         assertEquals(EXPECTED_LIST.size(), (int) cargo.getNecessaryInformation());
     }
 
+    /**
+     * This test checks if implemented method getType works as expected.
+     */
     @Test
     public void getType_returnType() {
         //arrange & act

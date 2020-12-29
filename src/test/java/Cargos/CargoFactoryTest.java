@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * Unit tests for CargoFactory
+ *
+ * @see CargoFactory
+ */
 @RunWith(JUnit4.class)
 public class CargoFactoryTest {
 
-
     MaterialArgs materialArgs;
-
-
     PeopleArgs peopleArgs;
 
     /**
@@ -29,6 +31,12 @@ public class CargoFactoryTest {
         assertEquals(CargoFactory.getInstance(), CargoFactory.getInstance());
     }
 
+    /**
+     * This test checks if created cargo is from expected type
+     * <p>
+     * </p>
+     * Cargo type varies from parameter calls.
+     */
     @Test
     public void createCargo_PersonCargo_PersonArgs() {
         //arrange
@@ -41,6 +49,12 @@ public class CargoFactoryTest {
         assertTrue(cargo instanceof PeoplesCargo);
     }
 
+    /**
+     * This test checks if created cargo is from expected type
+     * <p>
+     * </p>
+     * Cargo type varies from parameter calls.
+     */
     @Test
     public void createCargo_MaterialCargo_MaterialArgs() {
         //arrange
@@ -53,6 +67,11 @@ public class CargoFactoryTest {
         assertTrue(cargo instanceof MaterialCargo);
     }
 
+    /**
+     * This test check if factory will throw an exception
+     * <p></p>
+     * Exception is thrown when an call is made with unsupported parameters.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void createCargo_ThrowIllegalArgumentException_NotSupportedArgs() {
         CargoFactory.getInstance().createCargo(materialArgs);

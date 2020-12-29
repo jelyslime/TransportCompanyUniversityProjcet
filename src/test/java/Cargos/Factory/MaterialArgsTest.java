@@ -6,8 +6,17 @@ import org.junit.runners.JUnit4;
 
 import static junit.framework.TestCase.assertEquals;
 
+/**
+ * Unit tests for MaterialArgs
+ *
+ * @see MaterialArgs
+ */
 @RunWith(JUnit4.class)
 public class MaterialArgsTest {
+
+    /**
+     * Test checks if getWeight works as expected
+     */
     @Test
     public void getWeight_ReturnPropWeight() {
         //arrange
@@ -18,6 +27,9 @@ public class MaterialArgsTest {
         assertEquals(EXPECTED_WEIGHT, peopleArgs.getWeight());
     }
 
+    /**
+     * Test checks if setWeight works as expected
+     */
     @Test
     public void setWeight_ModifyPropWeight() {
         //arrange

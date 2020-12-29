@@ -5,6 +5,13 @@ import utility.TRANSPORT_TYPE;
 
 import java.util.ArrayList;
 
+/**
+ * Class represent humans as a value that haves to be transported.
+ * <p></p>
+ * Inherited from abstract class Cargo.
+ *
+ * @see Cargo
+ */
 public class PeoplesCargo extends Cargo {
     private ArrayList<Person> persons;
 
@@ -35,6 +42,11 @@ public class PeoplesCargo extends Cargo {
         return getPersons().size();
     }
 
+    /**
+     * Implemented method from CargoNecessaryInformation.
+     *
+     * @return total number of persons to be transported.
+     */
     @Override
     public double getNecessaryInformation() {
         return getNumberOfPeoples();

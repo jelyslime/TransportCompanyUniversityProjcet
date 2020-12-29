@@ -2,6 +2,13 @@ package Cargos;
 
 import utility.TRANSPORT_TYPE;
 
+/**
+ * Class represent cargos who are not any known form of live.
+ * Inherited from abstract class Cargo.
+ * Cargo dimensions are ignored.
+ *
+ * @see Cargo
+ */
 public class MaterialCargo extends Cargo {
     private double CargoWeight;
 
@@ -28,6 +35,11 @@ public class MaterialCargo extends Cargo {
         CargoWeight = cargoWeight;
     }
 
+    /**
+     * Implemented method from CargoNecessaryInformation.
+     *
+     * @return total weight of cargo.
+     */
     @Override
     public double getNecessaryInformation() {
         return getCargoWeight();
