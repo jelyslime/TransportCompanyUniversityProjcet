@@ -1,6 +1,6 @@
 package Vechicles;
 
-import Vehicles.VEHICLE_TRANSPORT_TYPE;
+import utility.TRANSPORT_TYPE;
 import Vehicles.VEHICLE_TYPE;
 import Vehicles.Vehicle;
 import org.junit.BeforeClass;
@@ -37,7 +37,7 @@ public class VechicleTest {
     public static void init() {
         vehicle = new Vehicle
                 .VechicleBuilder()
-                .transportType(VEHICLE_TRANSPORT_TYPE.PASSENGER)
+                .transportType(TRANSPORT_TYPE.PASSENGER)
                 .vechicleType(VEHICLE_TYPE.BANICHARKA)
                 .withCategory(CATEGORY.C)
                 .withMaximumCapacity(5)
@@ -102,7 +102,7 @@ public class VechicleTest {
     @Test
     public void transportType_SetVehicleTransportType_BuilderWorks() {
         //assert
-        assertEquals(VEHICLE_TRANSPORT_TYPE.PASSENGER, vehicle.getTransportType());
+        assertEquals(TRANSPORT_TYPE.PASSENGER, vehicle.getTransportType());
     }
 
 
@@ -115,7 +115,7 @@ public class VechicleTest {
         //arrange & act
         Vehicle vehicle3 = new Vehicle
                 .VechicleBuilder()
-                .transportType(VEHICLE_TRANSPORT_TYPE.PASSENGER)
+                .transportType(TRANSPORT_TYPE.PASSENGER)
                 .vechicleType(VEHICLE_TYPE.BANICHARKA)
                 .withCategory(CATEGORY.C)
                 .withMaximumCapacity(5)
@@ -136,7 +136,7 @@ public class VechicleTest {
         //arrange & act
         Vehicle vehicle3 = new Vehicle
                 .VechicleBuilder()
-                .transportType(VEHICLE_TRANSPORT_TYPE.PASSENGER)
+                .transportType(TRANSPORT_TYPE.PASSENGER)
                 .vechicleType(VEHICLE_TYPE.BANICHARKA)
                 .withCategory(CATEGORY.C)
                 .withMaximumCapacity(5)
@@ -167,7 +167,7 @@ public class VechicleTest {
         //arrange & act
         Vehicle vehicle4 = new Vehicle
                 .VechicleBuilder()
-                .transportType(VEHICLE_TRANSPORT_TYPE.PASSENGER)
+                .transportType(TRANSPORT_TYPE.PASSENGER)
                 .vechicleType(VEHICLE_TYPE.BANICHARKA)
                 .withCategory(CATEGORY.C)
                 .withMaximumCapacity(5)

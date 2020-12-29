@@ -1,9 +1,9 @@
-package Vehicles;
+package utility;
 
 /**
  * Type of transport a vehicle can carry.
  */
-public enum VEHICLE_TRANSPORT_TYPE {
+public enum TRANSPORT_TYPE {
     PASSENGER,
     PRODUCT
 }

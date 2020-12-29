@@ -1,17 +1,25 @@
 package Cargos;
 
 import Persons.Person;
+import utility.TRANSPORT_TYPE;
 
 import java.util.ArrayList;
 
-public class Peoples extends Cargo {
+public class PeoplesCargo extends Cargo {
     private ArrayList<Person> persons;
 
-    public Peoples(){
+    public PeoplesCargo() {
+        super(TRANSPORT_TYPE.PASSENGER);
         this.persons = new ArrayList<>();
     }
 
-    public Peoples(ArrayList<Person> persons) {
+    public PeoplesCargo(ArrayList<Person> persons) {
+        super(TRANSPORT_TYPE.PASSENGER);
+        this.persons = persons;
+    }
+
+    public PeoplesCargo(TRANSPORT_TYPE type, ArrayList<Person> persons) {
+        super(type);
         this.persons = persons;
     }
 
@@ -23,7 +31,7 @@ public class Peoples extends Cargo {
         this.persons = persons;
     }
 
-    protected int getNumberOfPeoples(){
+    protected int getNumberOfPeoples() {
         return getPersons().size();
     }
 

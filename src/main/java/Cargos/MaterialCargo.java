@@ -1,9 +1,22 @@
 package Cargos;
 
-public class MaterialCargo extends Cargo{
+import utility.TRANSPORT_TYPE;
+
+public class MaterialCargo extends Cargo {
     private double CargoWeight;
 
+    public MaterialCargo() {
+        super(TRANSPORT_TYPE.PRODUCT);
+        this.CargoWeight = 0;
+    }
+
     public MaterialCargo(double cargoWeight) {
+        super(TRANSPORT_TYPE.PRODUCT);
+        CargoWeight = cargoWeight;
+    }
+
+    public MaterialCargo(TRANSPORT_TYPE type, double cargoWeight) {
+        super(type);
         CargoWeight = cargoWeight;
     }
 
@@ -19,4 +32,6 @@ public class MaterialCargo extends Cargo{
     public double getNecessaryInformation() {
         return getCargoWeight();
     }
+
+
 }

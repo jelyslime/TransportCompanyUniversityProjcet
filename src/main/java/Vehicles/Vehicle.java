@@ -2,6 +2,7 @@ package Vehicles;
 
 
 import utility.CATEGORY;
+import utility.TRANSPORT_TYPE;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class Vehicle {
     final int vehicleId = VechiclesIdCounterSingleton.getInstance().counter.incrementAndGet();
     private CATEGORY categoryRequired;
     private BigDecimal pricePerKm;
-    private VEHICLE_TRANSPORT_TYPE transportType;
+    private TRANSPORT_TYPE transportType;
     private VEHICLE_TYPE vehicleType;
     private double maximumCapacity;
 
@@ -34,15 +35,15 @@ public class Vehicle {
         this.categoryRequired = CATEGORY.B;
         pricePerKm = new BigDecimal("0.0");
         this.maximumCapacity = 0.0;
-        transportType = VEHICLE_TRANSPORT_TYPE.PASSENGER;
+        transportType = TRANSPORT_TYPE.PASSENGER;
         vehicleType = VEHICLE_TYPE.BANICHARKA;
     }
 
     /**
      * @return transport type of current object
-     * @see VEHICLE_TRANSPORT_TYPE
+     * @see TRANSPORT_TYPE
      */
-    public VEHICLE_TRANSPORT_TYPE getTransportType() {
+    public TRANSPORT_TYPE getTransportType() {
         return transportType;
     }
 
@@ -59,7 +60,7 @@ public class Vehicle {
      * Meaning of maximum capacity may vary from small to large value
      * because if VEHICLE_TRANSPORT_TYPE is PERSON it will represent the maximum number of passengers for this vehicle,
      * if it is PRODUCT It will represent the maximum weight that can be uploaded to the vehicle.
-     * @see VEHICLE_TRANSPORT_TYPE
+     * @see TRANSPORT_TYPE
      */
     public double getMaximumCapacity() {
         return maximumCapacity;
@@ -128,7 +129,7 @@ public class Vehicle {
     public static class VechicleBuilder {
         private CATEGORY categoryRequired;
         private BigDecimal pricePerKm;
-        private VEHICLE_TRANSPORT_TYPE transportType;
+        private TRANSPORT_TYPE transportType;
         private VEHICLE_TYPE vehicleType;
         private double maximumCapacity;
 
@@ -147,9 +148,9 @@ public class Vehicle {
          * Sets object local property to the one from the parameter.
          * @param transportType Type being transported with current vehicle.
          * @return this
-         * @see VEHICLE_TRANSPORT_TYPE
+         * @see TRANSPORT_TYPE
          */
-        public VechicleBuilder transportType(VEHICLE_TRANSPORT_TYPE transportType) {
+        public VechicleBuilder transportType(TRANSPORT_TYPE transportType) {
             this.transportType = transportType;
             return this;
         }
