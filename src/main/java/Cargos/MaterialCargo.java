@@ -2,6 +2,8 @@ package Cargos;
 
 import utility.TRANSPORT_TYPE;
 
+import java.util.Objects;
+
 /**
  * Class represent cargos who are not any known form of live.
  * Inherited from abstract class Cargo.
@@ -33,6 +35,28 @@ public class MaterialCargo extends Cargo {
 
     public void setCargoWeight(double cargoWeight) {
         CargoWeight = cargoWeight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MaterialCargo cargo = (MaterialCargo) o;
+        return Double.compare(cargo.CargoWeight, CargoWeight) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), CargoWeight);
+    }
+
+    @Override
+    public String toString() {
+        return "MaterialCargo{" +
+                "CargoWeight=" + CargoWeight +
+                ", type=" + getType() +
+                '}';
     }
 
     /**

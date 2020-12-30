@@ -4,6 +4,7 @@ import Persons.Person;
 import utility.TRANSPORT_TYPE;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class represent humans as a value that haves to be transported.
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class PeoplesCargo extends Cargo {
     private ArrayList<Person> persons;
 
-    public PeoplesCargo() {
+    protected PeoplesCargo() {
         super(TRANSPORT_TYPE.PASSENGER);
         this.persons = new ArrayList<>();
     }
@@ -40,6 +41,27 @@ public class PeoplesCargo extends Cargo {
 
     protected int getNumberOfPeoples() {
         return getPersons().size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PeoplesCargo that = (PeoplesCargo) o;
+        return Objects.equals(persons, that.persons);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), persons);
+    }
+
+    @Override
+    public String toString() {
+        return "PeoplesCargo{" +
+                "persons=" + persons +
+                '}';
     }
 
     /**
