@@ -33,7 +33,7 @@ import java.util.Objects;
  *
  * @author Vladislav Zlatanov
  */
-public class Transport {
+public class Transport implements java.io.Serializable {
     /**
      * The starting date of the transport
      */
