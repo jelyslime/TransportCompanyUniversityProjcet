@@ -1,6 +1,7 @@
 package Vehicles;
 
 
+import TransportCompany.TransportCompany;
 import utility.CATEGORY;
 import utility.TRANSPORT_TYPE;
 
@@ -21,22 +22,42 @@ import java.util.Objects;
  * @see VechicleBuilder
  */
 public class Vehicle {
-    final int vehicleId = VechiclesIdCounterSingleton.getInstance().counter.incrementAndGet();
-    private CATEGORY categoryRequired;
-    private BigDecimal pricePerKm;
-    private TRANSPORT_TYPE transportType;
-    private VEHICLE_TYPE vehicleType;
-    private double maximumCapacity;
+    final int vehicleId = VechiclesIdCounterSingleton.getInstance()
+            .counter.incrementAndGet(); //auto generated id
+    private CATEGORY categoryRequired; //Category required for the vehicle to be driven.
+    private BigDecimal pricePerKm; //price per kilometer for driving vehicle.
+    private TRANSPORT_TYPE transportType; //type of cargo that vehicle is suited for
+    private VEHICLE_TYPE vehicleType; //type of the vehicle.
+    private double maximumCapacity; //maximum load capacity.
 
     /**
-     * Private no-args constructor guarantees no "empty" instances of class will be created.
+     * Private no-args constructor for the use of {@link VechicleBuilder}
      */
     private Vehicle() {
-        this.categoryRequired = CATEGORY.B;
-        pricePerKm = new BigDecimal("0.0");
-        this.maximumCapacity = 0.0;
-        transportType = TRANSPORT_TYPE.PASSENGER;
-        vehicleType = VEHICLE_TYPE.BANICHARKA;
+
+    }
+
+    /**
+     * All-args constructor.
+     *
+     * <P>Not recommended to be used,
+     * because it makes code unreadable and there are no
+     * null checks for given arguments.</P>
+     *
+     * <p>For creating instances of {@link Vehicle} use {@link VechicleBuilder}.</p>
+     * @param categoryRequired Category required for the vehicle to be driven.
+     * @param pricePerKm price per kilometer for driving vehicle.
+     * @param transportType type of cargo that vehicle is suited for
+     * @param vehicleType type of the vehicle.
+     * @param maximumCapacity maximum load capacity.
+     */
+    public Vehicle(CATEGORY categoryRequired, BigDecimal pricePerKm,
+                   TRANSPORT_TYPE transportType, VEHICLE_TYPE vehicleType, double maximumCapacity) {
+        this.categoryRequired = categoryRequired;
+        this.pricePerKm = pricePerKm;
+        this.transportType = transportType;
+        this.vehicleType = vehicleType;
+        this.maximumCapacity = maximumCapacity;
     }
 
     /**
@@ -90,6 +111,38 @@ public class Vehicle {
         return pricePerKm;
     }
 
+    public void setCategoryRequired(CATEGORY categoryRequired) {
+        if (Objects.isNull(categoryRequired)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
+        this.categoryRequired = categoryRequired;
+    }
+
+    public void setPricePerKm(BigDecimal pricePerKm) {
+        if (Objects.isNull(pricePerKm)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
+        this.pricePerKm = pricePerKm;
+    }
+
+    public void setTransportType(TRANSPORT_TYPE transportType) {
+        if (Objects.isNull(transportType)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
+        this.transportType = transportType;
+    }
+
+    public void setVehicleType(VEHICLE_TYPE vehicleType) {
+        if (Objects.isNull(vehicleType)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
+        this.vehicleType = vehicleType;
+    }
+
+    public void setMaximumCapacity(double maximumCapacity) {
+        this.maximumCapacity = maximumCapacity;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -140,6 +193,9 @@ public class Vehicle {
          * @see CATEGORY
          */
         public VechicleBuilder withCategory(CATEGORY category) {
+            if (Objects.isNull(category)){
+                this.categoryRequired = CATEGORY.B;
+            }
             this.categoryRequired = category;
             return this;
         }
@@ -152,6 +208,9 @@ public class Vehicle {
          * @see TRANSPORT_TYPE
          */
         public VechicleBuilder transportType(TRANSPORT_TYPE transportType) {
+            if (Objects.isNull(transportType)){
+                this.transportType = TRANSPORT_TYPE.PASSENGER;
+            }
             this.transportType = transportType;
             return this;
         }
@@ -164,6 +223,9 @@ public class Vehicle {
          * @see VEHICLE_TYPE
          */
         public VechicleBuilder vechicleType(VEHICLE_TYPE vehicleType) {
+            if (Objects.isNull(vehicleType)){
+                this.vehicleType = VEHICLE_TYPE.BANICHARKA;
+            }
             this.vehicleType = vehicleType;
             return this;
         }
@@ -187,6 +249,9 @@ public class Vehicle {
          * @see BigDecimal
          */
         public VechicleBuilder withPricePerKm(BigDecimal price) {
+            if (Objects.isNull(price)){
+                this.pricePerKm = BigDecimal.ZERO;
+            }
             this.pricePerKm = price;
             return this;
         }
