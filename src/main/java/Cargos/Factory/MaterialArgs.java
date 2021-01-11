@@ -16,11 +16,18 @@ public class MaterialArgs implements CargoArgsFor<MaterialCargo> {
         this.weight = weight;
     }
 
+    public MaterialArgs() {
+        weight = 0;
+    }
+
     public double getWeight() {
         return weight;
     }
 
     public void setWeight(double weight) {
+        if (weight < 0) {
+            throw new IllegalArgumentException("Value is negative.");
+        }
         this.weight = weight;
     }
 }

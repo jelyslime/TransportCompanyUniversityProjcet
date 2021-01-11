@@ -4,6 +4,9 @@ import Cargos.PeoplesCargo;
 import Persons.Person;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Concrete implementation of interface PeopleArgs, used by CargoFactory to store parameters for PeoplesCargo.
@@ -13,17 +16,35 @@ import java.util.ArrayList;
  * @see PeoplesCargo
  */
 public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
-    private ArrayList<Person> personArrayList;
+    private List<Person> personArrayList;
 
     public PeopleArgs(ArrayList<Person> personArrayList) {
-        this.personArrayList = personArrayList;
+        if (Objects.isNull(personArrayList)) {
+            this.personArrayList = new ArrayList<>();
+        }
+        this.personArrayList = personArrayList
+                .stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
-    public ArrayList<Person> getPersonArrayList() {
+    public PeopleArgs() {
+        this.personArrayList = new ArrayList<>();
+    }
+
+    public List<Person> getPersonArrayList() {
         return personArrayList;
     }
 
-    public void setPersonArrayList(ArrayList<Person> personArrayList) {
-        this.personArrayList = personArrayList;
+    public void setPersonArrayList(List<Person> list) {
+        if (Objects.isNull(list)) {
+            throw new IllegalArgumentException("Argument is null");
+        }
+
+        this.personArrayList = list
+                .stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
+
 }

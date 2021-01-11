@@ -34,6 +34,9 @@ public class MaterialCargo extends Cargo {
     }
 
     public void setCargoWeight(double cargoWeight) {
+        if (cargoWeight < 0) {
+            throw new IllegalArgumentException("Value is negative.");
+        }
         CargoWeight = cargoWeight;
     }
 

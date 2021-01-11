@@ -4,7 +4,9 @@ import Persons.Person;
 import utility.TRANSPORT_TYPE;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Class represent humans as a value that haves to be transported.
@@ -14,29 +16,35 @@ import java.util.Objects;
  * @see Cargo
  */
 public class PeoplesCargo extends Cargo {
-    private ArrayList<Person> persons;
+    private List<Person> persons;
 
     protected PeoplesCargo() {
         super(TRANSPORT_TYPE.PASSENGER);
         this.persons = new ArrayList<>();
     }
 
-    public PeoplesCargo(ArrayList<Person> persons) {
+    public PeoplesCargo(List<Person> persons) {
         super(TRANSPORT_TYPE.PASSENGER);
         this.persons = persons;
     }
 
-    public PeoplesCargo(TRANSPORT_TYPE type, ArrayList<Person> persons) {
+    public PeoplesCargo(TRANSPORT_TYPE type, List<Person> persons) {
         super(type);
         this.persons = persons;
     }
 
-    public ArrayList<Person> getPersons() {
+    public List<Person> getPersons() {
         return persons;
     }
 
-    public void setPersons(ArrayList<Person> persons) {
-        this.persons = persons;
+    public void setPersons(List<Person> persons) {
+        if (Objects.isNull(persons)) {
+            throw new IllegalArgumentException("Argument is null");
+        }
+        this.persons = persons
+                .stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     protected int getNumberOfPeoples() {

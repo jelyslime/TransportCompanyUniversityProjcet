@@ -29,6 +29,9 @@ public class Client extends Person {
     }
 
     public void setBudget(BigDecimal budget) {
+        if (Objects.isNull(budget)) {
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.budget = budget;
     }
 
@@ -37,6 +40,9 @@ public class Client extends Person {
     }
 
     public void setCargo(Cargo cargo) {
+        if (Objects.isNull(cargo)) {
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.cargo = cargo;
     }
 

@@ -26,6 +26,9 @@ public class Employee extends Person {
     }
 
     public void setSalary(BigDecimal salary) {
+        if (Objects.isNull(salary)) {
+            throw new IllegalArgumentException("Argument is null");
+        }
         this.salary = salary;
     }
 
@@ -34,6 +37,9 @@ public class Employee extends Person {
     }
 
     public void setCategory(CATEGORY category) {
+        if (Objects.isNull(category)) {
+            throw new IllegalArgumentException("Argument is null");
+        }
         this.category = category;
     }
 

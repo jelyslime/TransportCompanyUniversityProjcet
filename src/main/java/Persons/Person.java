@@ -18,6 +18,9 @@ public abstract class Person {
     }
 
     public void setName(String name) {
+        if (Objects.isNull(name)) {
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.name = name;
     }
 
