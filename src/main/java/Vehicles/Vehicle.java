@@ -1,7 +1,6 @@
 package Vehicles;
 
 
-import TransportCompany.TransportCompany;
 import utility.CATEGORY;
 import utility.TRANSPORT_TYPE;
 
@@ -195,6 +194,7 @@ public class Vehicle {
         public VechicleBuilder withCategory(CATEGORY category) {
             if (Objects.isNull(category)){
                 this.categoryRequired = CATEGORY.B;
+                return this;
             }
             this.categoryRequired = category;
             return this;
@@ -210,6 +210,7 @@ public class Vehicle {
         public VechicleBuilder transportType(TRANSPORT_TYPE transportType) {
             if (Objects.isNull(transportType)){
                 this.transportType = TRANSPORT_TYPE.PASSENGER;
+                return this;
             }
             this.transportType = transportType;
             return this;
@@ -225,6 +226,7 @@ public class Vehicle {
         public VechicleBuilder vechicleType(VEHICLE_TYPE vehicleType) {
             if (Objects.isNull(vehicleType)){
                 this.vehicleType = VEHICLE_TYPE.BANICHARKA;
+                return this;
             }
             this.vehicleType = vehicleType;
             return this;
@@ -251,6 +253,7 @@ public class Vehicle {
         public VechicleBuilder withPricePerKm(BigDecimal price) {
             if (Objects.isNull(price)){
                 this.pricePerKm = BigDecimal.ZERO;
+                return this;
             }
             this.pricePerKm = price;
             return this;
@@ -264,6 +267,19 @@ public class Vehicle {
          */
         public Vehicle build() {
             Vehicle vehicle = new Vehicle();
+
+            if (Objects.isNull(vehicleType)){
+                vehicleType = VEHICLE_TYPE.BANICHARKA;
+            }
+            if (Objects.isNull(categoryRequired)){
+                categoryRequired = CATEGORY.B;
+            }
+            if (Objects.isNull(pricePerKm)){
+                pricePerKm = BigDecimal.ZERO;
+            }
+            if (Objects.isNull(transportType)){
+                transportType = TRANSPORT_TYPE.PRODUCT;
+            }
 
             vehicle.vehicleType = this.vehicleType;
             vehicle.categoryRequired = this.categoryRequired;

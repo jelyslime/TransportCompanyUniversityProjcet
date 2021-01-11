@@ -4,6 +4,9 @@ import Cargos.Cargo;
 import Cargos.CargoNecessaryInformation;
 import Persons.Client;
 import Persons.Employee;
+import Persons.Factory.ClientArgs;
+import Persons.Factory.EmployeeArgs;
+import Persons.PersonFactory;
 import Vehicles.Vehicle;
 import utility.FeeCalculation.GenericFeeCalculator;
 
@@ -119,6 +122,9 @@ public class Transport implements java.io.Serializable {
      * @param dateOfBegin date to be set.
      */
     public void setDateOfBegin(Date dateOfBegin) {
+        if (Objects.isNull(dateOfBegin)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.dateOfBegin = dateOfBegin;
     }
 
@@ -135,6 +141,9 @@ public class Transport implements java.io.Serializable {
      * @param dateOfEnd date to be set.
      */
     public void setDateOfEnd(Date dateOfEnd) {
+        if (Objects.isNull(dateOfEnd)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.dateOfEnd = dateOfEnd;
     }
 
@@ -167,6 +176,9 @@ public class Transport implements java.io.Serializable {
      * @param client client to be set.
      */
     public void setClient(Client client) {
+        if (Objects.isNull(client)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.client = client;
     }
 
@@ -183,6 +195,9 @@ public class Transport implements java.io.Serializable {
      * @param cargoToBeTransported cargo to be set.
      */
     public void setCargoToBeTransported(Cargo cargoToBeTransported) {
+        if (Objects.isNull(cargoToBeTransported)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.cargoToBeTransported = cargoToBeTransported;
     }
 
@@ -215,6 +230,9 @@ public class Transport implements java.io.Serializable {
      * @param priceForTransport price to be set.
      */
     public void setPriceForTransport(BigDecimal priceForTransport) {
+        if (Objects.isNull(priceForTransport)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.priceForTransport = priceForTransport;
     }
 
@@ -231,6 +249,9 @@ public class Transport implements java.io.Serializable {
      * @param driver driver to be set.
      */
     public void setDriver(Employee driver) {
+        if (Objects.isNull(driver)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.driver = driver;
     }
 
@@ -247,6 +268,9 @@ public class Transport implements java.io.Serializable {
      * @param vehicle vehicle to be set.
      */
     public void setVehicle(Vehicle vehicle) {
+        if (Objects.isNull(vehicle)){
+            throw new IllegalArgumentException("Argument is null.");
+        }
         this.vehicle = vehicle;
     }
 
@@ -346,6 +370,9 @@ public class Transport implements java.io.Serializable {
          * @return this {@code TransportBuilder}
          */
         public TransportBuilder withDateOfBegin(Date transportStartDate) {
+            if (Objects.isNull(transportStartDate)){
+                this.dateOfBegin = new Date();
+            }
             this.dateOfBegin = transportStartDate;
             return this;
         }
@@ -355,6 +382,10 @@ public class Transport implements java.io.Serializable {
          * @return this {@code TransportBuilder}
          */
         public TransportBuilder withDateOfEnd(Date transportEndDate) {
+            if (Objects.isNull(transportEndDate)){
+                this.dateOfEnd = new Date();
+                return this;
+            }
             this.dateOfEnd = transportEndDate;
             return this;
         }
@@ -364,6 +395,7 @@ public class Transport implements java.io.Serializable {
          * @return this {@code TransportBuilder}
          */
         public TransportBuilder withDestination(double destination) {
+
             this.destination = destination;
             return this;
         }
@@ -373,6 +405,11 @@ public class Transport implements java.io.Serializable {
          * @return this {@code TransportBuilder}
          */
         public TransportBuilder withClient(Client client) {
+            if (Objects.isNull(client)){
+                this.client = PersonFactory.getInstance()
+                        .createPerson(new ClientArgs());
+                return this;
+            }
             this.client = client;
             return this;
         }
@@ -382,11 +419,9 @@ public class Transport implements java.io.Serializable {
          * <p></p>
          * Method intended for inner use only.
          *
-         * @return this {@code TransportBuilder}
          */
-        protected TransportBuilder withCargo() {
+        protected void withCargo() {
             this.cargoToBeTransported = this.client.getCargo();
-            return this;
         }
 
         /**
@@ -421,6 +456,10 @@ public class Transport implements java.io.Serializable {
          * @return this {@code TransportBuilder}
          */
         public TransportBuilder withVehicle(Vehicle vehicle) {
+            if (Objects.isNull(vehicle)){
+                this.vehicle = new Vehicle.VechicleBuilder().build();
+                return this;
+            }
             this.vehicle = vehicle;
             return this;
         }
@@ -430,6 +469,10 @@ public class Transport implements java.io.Serializable {
          * @return this {@code TransportBuilder}
          */
         public TransportBuilder withDriver(Employee driver) {
+            if (Objects.isNull(driver)){
+                this.driver = PersonFactory.getInstance().createPerson(new EmployeeArgs());
+                return this;
+            }
             this.driver = driver;
             return this;
         }
@@ -449,8 +492,24 @@ public class Transport implements java.io.Serializable {
         public Transport build() {
             Transport transport = new Transport();
 
+            if (Objects.isNull(client)){
+                client = PersonFactory.getInstance()
+                        .createPerson(new ClientArgs());
+            }
             if (this.cargoToBeTransported == null && this.client != null) {
                 this.withCargo();
+            }
+            if (Objects.isNull(dateOfBegin)){
+                dateOfBegin = new Date();
+            }
+            if (Objects.isNull(dateOfEnd)){
+                dateOfEnd = new Date();
+            }
+            if (Objects.isNull(vehicle)){
+                vehicle = new Vehicle.VechicleBuilder().build();
+            }
+            if (Objects.isNull(driver)){
+                driver = PersonFactory.getInstance().createPerson(new EmployeeArgs());
             }
 
             transport.dateOfBegin = this.dateOfBegin;
