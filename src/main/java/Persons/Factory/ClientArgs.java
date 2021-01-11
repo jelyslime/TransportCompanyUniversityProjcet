@@ -13,9 +13,9 @@ import java.math.BigDecimal;
  * @see Client
  */
 public class ClientArgs implements PersonArgsFor<Client> {
-    private String name;
-    private BigDecimal budget;
-    private Cargo cargo;
+    private final String name;
+    private final BigDecimal budget;
+    private final Cargo cargo;
 
     public ClientArgs(String name, BigDecimal budget, Cargo cargo) {
         this.name = name;

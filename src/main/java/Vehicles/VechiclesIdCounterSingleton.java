@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * This class implements singleton design pattern.
  * <p>
- *     Class purpose is to simulate automatic id generation via an atomic integer
+ * Class purpose is to simulate automatic id generation via an atomic integer
  * </p>
  */
 public class VechiclesIdCounterSingleton {
@@ -13,12 +13,12 @@ public class VechiclesIdCounterSingleton {
 
     public final AtomicInteger counter;
 
-    private VechiclesIdCounterSingleton(){
+    private VechiclesIdCounterSingleton() {
         counter = new AtomicInteger();
     }
 
-    public static VechiclesIdCounterSingleton getInstance(){
-        if (singleton == null){
+    public static VechiclesIdCounterSingleton getInstance() {
+        if (singleton == null) {
             singleton = new VechiclesIdCounterSingleton();
         }
         return singleton;

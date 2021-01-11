@@ -13,9 +13,9 @@ import java.math.BigDecimal;
  * @see Employee
  */
 public class EmployeeArgs implements PersonArgsFor<Employee> {
-    private String name;
-    private BigDecimal salary;
-    private CATEGORY category;
+    private final String name;
+    private final BigDecimal salary;
+    private final CATEGORY category;
 
     public EmployeeArgs(String name, BigDecimal salary, CATEGORY category) {
         this.name = name;

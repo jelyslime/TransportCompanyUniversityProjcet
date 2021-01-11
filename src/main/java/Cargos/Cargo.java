@@ -15,7 +15,7 @@ import java.util.Objects;
  * @see Cargos.CargoNecessaryInformation
  */
 public abstract class Cargo implements CargoNecessaryInformation {
-    private TRANSPORT_TYPE type;
+    private final TRANSPORT_TYPE type;
 
     protected Cargo(TRANSPORT_TYPE type) {
         this.type = type;

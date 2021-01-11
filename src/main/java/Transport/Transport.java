@@ -107,7 +107,6 @@ public class Transport implements java.io.Serializable {
 
 
     /**
-     *
      * @return Beginning date of the transportation,
      */
     public Date getDateOfBegin() {
@@ -115,71 +114,8 @@ public class Transport implements java.io.Serializable {
     }
 
     /**
-     *
-     * @return @return Ending date of the transportation
-     */
-    public Date getDateOfEnd() {
-        return dateOfEnd;
-    }
-
-    /**
-     *
-     * @return Destination in km to the desired location.
-     */
-    public double getDestination() {
-        return destination;
-    }
-
-    /**
-     *
-     * @return Client who required the transportation.
-     */
-    public Client getClient() {
-        return client;
-    }
-
-    /**
-     *
-     * @return Cargo that is going to be transported.
-     */
-    public Cargo getCargoToBeTransported() {
-        return (Cargo) cargoToBeTransported;
-    }
-
-    /**
-     *
-     * @return If the transportation is payed.
-     */
-    public boolean isPayed() {
-        return isPayed;
-    }
-
-    /**
-     *
-     * @return Price for the transportation.
-     */
-    public BigDecimal getPriceForTransport() {
-        return priceForTransport;
-    }
-
-    /**
-     *
-     * @return Driver who is going to do the transportation.
-     */
-    public Employee getDriver() {
-        return driver;
-    }
-
-    /**
-     *
-     * @return vehicle that is going to be used for the transportation.
-     */
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    /**
      * Sets the date of begin.
+     *
      * @param dateOfBegin date to be set.
      */
     public void setDateOfBegin(Date dateOfBegin) {
@@ -187,7 +123,15 @@ public class Transport implements java.io.Serializable {
     }
 
     /**
+     * @return @return Ending date of the transportation
+     */
+    public Date getDateOfEnd() {
+        return dateOfEnd;
+    }
+
+    /**
      * Sets the date of ending.
+     *
      * @param dateOfEnd date to be set.
      */
     public void setDateOfEnd(Date dateOfEnd) {
@@ -195,49 +139,111 @@ public class Transport implements java.io.Serializable {
     }
 
     /**
+     * @return Destination in km to the desired location.
+     */
+    public double getDestination() {
+        return destination;
+    }
+
+    /**
      * Sets the destination to an location
+     *
      * @param destination destination to be set.
      */
     public void setDestination(double destination) {
         this.destination = destination;
     }
+
+    /**
+     * @return Client who required the transportation.
+     */
+    public Client getClient() {
+        return client;
+    }
+
     /**
      * Sets the client who wants the transportation.
+     *
      * @param client client to be set.
      */
     public void setClient(Client client) {
         this.client = client;
     }
+
+    /**
+     * @return Cargo that is going to be transported.
+     */
+    public Cargo getCargoToBeTransported() {
+        return (Cargo) cargoToBeTransported;
+    }
+
     /**
      * Sets the cargo which will be transported.
+     *
      * @param cargoToBeTransported cargo to be set.
      */
     public void setCargoToBeTransported(Cargo cargoToBeTransported) {
         this.cargoToBeTransported = cargoToBeTransported;
     }
+
+    /**
+     * @return If the transportation is payed.
+     */
+    public boolean isPayed() {
+        return isPayed;
+    }
+
     /**
      * Sets the flag for payment
+     *
      * @param payed boolean to be set.
      */
     public void setPayed(boolean payed) {
         isPayed = payed;
     }
+
+    /**
+     * @return Price for the transportation.
+     */
+    public BigDecimal getPriceForTransport() {
+        return priceForTransport;
+    }
+
     /**
      * Sets the price for the transportation.
+     *
      * @param priceForTransport price to be set.
      */
     public void setPriceForTransport(BigDecimal priceForTransport) {
         this.priceForTransport = priceForTransport;
     }
+
+    /**
+     * @return Driver who is going to do the transportation.
+     */
+    public Employee getDriver() {
+        return driver;
+    }
+
     /**
      * Sets the driver that is going to do the transport.
+     *
      * @param driver driver to be set.
      */
     public void setDriver(Employee driver) {
         this.driver = driver;
     }
+
+    /**
+     * @return vehicle that is going to be used for the transportation.
+     */
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
     /**
      * Sets the vehicle that is going to be used for the transport
+     *
      * @param vehicle vehicle to be set.
      */
     public void setVehicle(Vehicle vehicle) {
@@ -246,6 +252,7 @@ public class Transport implements java.io.Serializable {
 
     /**
      * Compare this {@code Transport} with the specified {@code Object } for equality.
+     *
      * @param o {@code Object} to which this {@code Transport} is to be compared.
      * @return {@code true} if the specified {@code Object} is a {@code Transport}
      * which values are equal to {@code Transport}'s
@@ -277,7 +284,6 @@ public class Transport implements java.io.Serializable {
     }
 
     /**
-     *
      * @return the string representation of this {@code Transport}.
      */
     @Override
@@ -298,9 +304,9 @@ public class Transport implements java.io.Serializable {
     /**
      * Method evaluates the specific price per kilometer using an singleton instance of
      * {@code GenericFeeCalculator} which implements {@code FeeCalculator} with arguments
-     *  from {@code CargoNecessaryInformation} then it is saved to a {@code BigDecimal}.
-     *  Then, the result from {@code GenericFeeCalculator} is multiplied with the total distance
-     *  and returns the result as {@code BigDecimal}.
+     * from {@code CargoNecessaryInformation} then it is saved to a {@code BigDecimal}.
+     * Then, the result from {@code GenericFeeCalculator} is multiplied with the total distance
+     * and returns the result as {@code BigDecimal}.
      *
      * @return The price for this {@code Transport}
      * @see GenericFeeCalculator
@@ -316,9 +322,10 @@ public class Transport implements java.io.Serializable {
     /**
      * A {@code TransportBuilder} is an inner static class which adopts the builder design pattern.
      * <p>
-     *     Class is designed to be used from {@code Transport}.
+     * Class is designed to be used from {@code Transport}.
      * </p>
      * Class contains identical properties with {@code Transport}.
+     *
      * @see Transport
      */
     public static class TransportBuilder {
@@ -335,7 +342,6 @@ public class Transport implements java.io.Serializable {
         private Vehicle vehicle;
 
         /**
-         *
          * @param transportStartDate parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -345,7 +351,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param transportEndDate parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -355,7 +360,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param destination parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -365,7 +369,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param client parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -387,7 +390,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param cargo parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -397,7 +399,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param priceForTransport parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -407,7 +408,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param isPayed parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -417,7 +417,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param vehicle parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -427,7 +426,6 @@ public class Transport implements java.io.Serializable {
         }
 
         /**
-         *
          * @param driver parameter to be set to property.
          * @return this {@code TransportBuilder}
          */
@@ -439,11 +437,11 @@ public class Transport implements java.io.Serializable {
         /**
          * Method builds a new instance of type {@code Transport}
          * <p>
-         *     Method uses default constructor for {@code Transporter} to create an empty instance,
-         *     Then it fills it with it's personal properties which is happening directly since {@code TransportBuilder}
-         *     is an inner class of {@code Transport} and can access directly private fields.
+         * Method uses default constructor for {@code Transporter} to create an empty instance,
+         * Then it fills it with it's personal properties which is happening directly since {@code TransportBuilder}
+         * is an inner class of {@code Transport} and can access directly private fields.
          * </p>
-         *Upon creation of the instance, there is a check if price for the transport is {@code null}, due it's optional.
+         * Upon creation of the instance, there is a check if price for the transport is {@code null}, due it's optional.
          * If it's not, newly created instance calls it's price evaluation method.
          *
          * @return complete object of {@code Transport}

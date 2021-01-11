@@ -579,15 +579,6 @@ public class TransportCompany implements Comparable<TransportCompany> {
         return transports;
     }
 
-    /**
-     * Auto-generated setter.
-     *
-     * @param transports transports map.
-     */
-    private void setTransportsAsMap(Map<Transport, Client> transports) {
-        this.transports = transports;
-    }
-
     public void setTransports(List<Transport> transports) {
         if (Objects.isNull(transports)) {
             throw new IllegalArgumentException("Argument is null.");
@@ -598,6 +589,15 @@ public class TransportCompany implements Comparable<TransportCompany> {
                 .collect(Collectors.toMap(Function.identity(), Transport::getClient));
 
         setTransportsAsMap(map);
+    }
+
+    /**
+     * Auto-generated setter.
+     *
+     * @param transports transports map.
+     */
+    private void setTransportsAsMap(Map<Transport, Client> transports) {
+        this.transports = transports;
     }
 
     /**

@@ -76,7 +76,6 @@ public class Vehicle {
     }
 
     /**
-     *
      * @return Necessary category to use vehicle.
      * @see CATEGORY
      */
@@ -85,7 +84,6 @@ public class Vehicle {
     }
 
     /**
-     *
      * @return price for kilometer.
      */
     public BigDecimal getPricePerKm() {
@@ -124,6 +122,7 @@ public class Vehicle {
 
     /**
      * Builder design pattern for Vehicle class.
+     *
      * @see Vehicle
      */
     public static class VechicleBuilder {
@@ -135,6 +134,7 @@ public class Vehicle {
 
         /**
          * Sets object local property to the one from the parameter.
+         *
          * @param category Category necessary to drive current vehicle.
          * @return this
          * @see CATEGORY
@@ -146,6 +146,7 @@ public class Vehicle {
 
         /**
          * Sets object local property to the one from the parameter.
+         *
          * @param transportType Type being transported with current vehicle.
          * @return this
          * @see TRANSPORT_TYPE
@@ -157,6 +158,7 @@ public class Vehicle {
 
         /**
          * Sets object local property to the one from the parameter.
+         *
          * @param vehicleType Type of current vehicle.
          * @return this
          * @see VEHICLE_TYPE
@@ -168,6 +170,7 @@ public class Vehicle {
 
         /**
          * Sets object local property to the one from the parameter.
+         *
          * @param capacity Capacity of current vehicle.
          * @return this
          */
@@ -178,6 +181,7 @@ public class Vehicle {
 
         /**
          * Sets object local property to the one from the parameter.
+         *
          * @param price Price for travelling per km.
          * @return this
          * @see BigDecimal
@@ -189,6 +193,7 @@ public class Vehicle {
 
         /**
          * Builds and returns instance of Vehicle
+         *
          * @return vehicle
          * @see Vehicle
          */
