@@ -1,5 +1,6 @@
 package TransportCompany;
 
+import Cargos.Cargo;
 import Cargos.CargoNecessaryInformation;
 import Persons.Client;
 import Persons.Employee;
@@ -70,7 +71,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
     /**
      * Private no-args constructor for the use of {@link TransportCompanyBuilder}
      */
-    private TransportCompany() {
+    protected TransportCompany() {
 
     }
 
@@ -155,7 +156,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * false if {@link Transport}  was not in list, thus it was not removed from list.
      */
     public boolean deleteTransport(Transport transport) {
-        if (getTransportsLikeMap().containsKey(transport)) {
+        if (!getTransportsLikeMap().containsKey(transport)) {
             return false;
         }
 
@@ -186,7 +187,8 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * subtraction will made earnings to negative value.
      */
     public boolean decreaseEarnings(BigDecimal valueToDecrease) {
-        if (getEarnings().subtract(valueToDecrease).compareTo(BigDecimal.ZERO) > 0) {
+        BigDecimal value = getEarnings().subtract(valueToDecrease);
+        if (value.signum() < 0) {
             return false;
         }
         setEarnings(getEarnings().subtract(valueToDecrease));
@@ -259,6 +261,9 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @param valueToIncrease value to add.
      */
     public void increaseEarnings(BigDecimal valueToIncrease) {
+        if (Objects.isNull(valueToIncrease)){
+            throw new IllegalArgumentException("Argument is null");
+        }
         setEarnings(getEarnings().add(valueToIncrease));
     }
 
@@ -313,15 +318,9 @@ public class TransportCompany implements Comparable<TransportCompany> {
             return false;
         }
 
-        Transport transport = new Transport.TransportBuilder()
-                .withDriver(driver)
-                .withVehicle(vehicleForTransportation)
-                .withClient(client)
-                .withDestination(distance)
-                .withCargo(client.getCargo())
-                .withDateOfBegin(begin)
-                .withDateOfEnd(end)
-                .build();
+        Transport transport = createNewTransport(driver,vehicleForTransportation,client,distance,
+                client.getCargo(),begin,end);
+
 
         addToEarningsIfEmployeePaysTransport(transport, client, isPayed);
 
@@ -330,6 +329,22 @@ public class TransportCompany implements Comparable<TransportCompany> {
         return true;
     }
 
+    protected Transport createNewTransport(Employee driver, Vehicle vehicle,
+                                           Client client, double distance,Cargo cargo,
+                                           Date begin,Date end){
+        Transport transport = new Transport.TransportBuilder()
+                .withDriver(driver)
+                .withVehicle(vehicle)
+                .withClient(client)
+                .withDestination(distance)
+                .withCargo(client.getCargo())
+                .withDateOfBegin(begin)
+                .withDateOfEnd(end)
+                .build();
+
+        return transport;
+
+    }
     /**
      * Method adds transport price to earnings if client have enough money and is paying the transport.
      *
@@ -340,7 +355,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
     protected void addToEarningsIfEmployeePaysTransport(Transport transport, Client client, boolean isPayed) {
         if (isPayed) {
             BigDecimal price = transport.getPriceForTransport();
-            if (client.getBudget().subtract(price).compareTo(BigDecimal.ZERO) > 0) {
+            if (client.getBudget().subtract(price).compareTo(BigDecimal.ZERO) < 0) {
                 System.out.println("Insufficient funds. Cannot pay transportation.");
                 transport.setPayed(false);
             } else {
@@ -406,6 +421,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
                 .distinct()
                 .collect(Collectors.toList());
 
+        employees.removeAll(availableEmployeesInSystem);
         availableEmployeesInSystem.addAll(employees);
 
         return availableEmployeesInSystem
@@ -428,6 +444,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
                 .collect(Collectors.toList());
     }
 
+    //TODO: FROM HERE BELOW NO TESTS.
     /**
      * Checks if vehicles from list are available on given period.
      *
@@ -793,7 +810,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      *
      * @param transports transports map.
      */
-    private void setTransportsAsMap(Map<Transport, Client> transports) {
+    protected void setTransportsAsMap(Map<Transport, Client> transports) {
         this.transports = transports;
     }
 
@@ -854,13 +871,13 @@ public class TransportCompany implements Comparable<TransportCompany> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TransportCompany that = (TransportCompany) o;
-        return Objects.equals(companyName, that.companyName) &&
-                Objects.equals(vehicles, that.vehicles) &&
-                Objects.equals(employees, that.employees) &&
-                Objects.equals(transports, that.transports) &&
-                Objects.equals(earnings, that.earnings) &&
-                Objects.equals(clients, that.clients);
+        TransportCompany company = (TransportCompany) o;
+        return Objects.equals(companyName, company.companyName) &&
+                Objects.equals(vehicles, company.vehicles) &&
+                Objects.equals(employees, company.employees) &&
+                Objects.equals(transports, company.transports) &&
+                Objects.equals(earnings, company.earnings) &&
+                Objects.equals(clients, company.clients);
     }
 
     /**
@@ -954,6 +971,18 @@ public class TransportCompany implements Comparable<TransportCompany> {
         }
 
         /**
+         * Test purpose only.
+         * @param vehicles
+         * @return
+         */
+        public TransportCompanyBuilder withVehiclesNoNullCheck(List<Vehicle> vehicles) {
+            this.withVehicles = vehicles;
+
+            return this;
+        }
+
+
+        /**
          * Sets object local property to the one from the parameter.
          *
          * @param employees List of {@link Employee} who work for the company.
@@ -967,6 +996,21 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
             return this;
         }
+
+        /**
+         * Test purpose only.
+         * @param employees
+         * @return
+         */
+        protected TransportCompanyBuilder withEmployeesNoNullChecks(List<Employee> employees) {
+            this.withEmployees = employees
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            return this;
+        }
+
 
         /**
          * Sets object local property to the one from the parameter.
@@ -995,6 +1039,11 @@ public class TransportCompany implements Comparable<TransportCompany> {
             return this;
         }
 
+        protected TransportCompanyBuilder withTransportsNoNullChecks(Map<Transport, Client> transports) {
+            this.withTransports = transports;
+            return this;
+        }
+
         /**
          * Sets object local property to the one from the parameter.
          *
@@ -1017,6 +1066,17 @@ public class TransportCompany implements Comparable<TransportCompany> {
                     .stream()
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
+
+            return this;
+        }
+
+        /**
+         * Test purpose only!
+         * @param clients
+         * @return
+         */
+        protected TransportCompanyBuilder withClientsNoNullCheck(List<Client> clients) {
+            this.withClients = clients;
 
             return this;
         }
