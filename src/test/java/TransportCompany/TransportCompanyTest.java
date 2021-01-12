@@ -18,7 +18,6 @@ import utility.TRANSPORT_TYPE;
 import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.*;
 
 import static junit.framework.TestCase.*;
@@ -26,9 +25,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransportCompanyTest {
-
-
-    private String companyName = "";
 
 
     @Mock
@@ -79,9 +75,6 @@ public class TransportCompanyTest {
     Transport transport2;
 
     @Mock
-    BigDecimal bigDecimal;
-
-    @Mock
     Date begin;
     @Mock
     Date end;
@@ -105,6 +98,7 @@ public class TransportCompanyTest {
     @Test
     public void allArgsConstructor_CreateInstance() {
         //arrange & act
+        String companyName = "";
         TransportCompany company = new TransportCompany(companyName, vehicles, employeeList,
                 transports, earnings, clientsList);
 
@@ -675,16 +669,12 @@ public class TransportCompanyTest {
     }
 
     @Test
-    public void employeesAvailableAtPeriod_ListOfEmployeesWhoAreAvalible() throws ParseException {
+    public void employeesAvailableAtPeriod_ListOfEmployeesWhoAreAvailable() {
         //arrange
-        // doReturn(employee1).when(transport).getDriver();
 
-        Date beforeNotDummy = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
-        Date after = new GregorianCalendar(2014, Calendar.FEBRUARY, 15).getTime();
         ArrayList<Transport> transports = new ArrayList<>();
         transports.add(transport);
-        //doReturn(beforeNotDummy).when(transport).getDateOfBegin();
-        //doReturn(after).when(transport).getDateOfEnd();
+
         doReturn(transports).when(transportCompany).getTransports();
         doReturn(employee1).when(transport).getDriver();
         List<Employee> employees = new ArrayList<>();
@@ -723,11 +713,9 @@ public class TransportCompanyTest {
     }
 
     @Test
-    public void vehiclesThatAreAvailableOnPeriod_ListOfVehiclesWhoAreAvalible() throws ParseException {
+    public void vehiclesThatAreAvailableOnPeriod_ListOfVehiclesWhoAreAvailable() {
         //arrange
-
         Date beforeNotDummy = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
-        Date after = new GregorianCalendar(2014, Calendar.FEBRUARY, 15).getTime();
         ArrayList<Transport> transports = new ArrayList<>();
         transports.add(transport);
         doReturn(beforeNotDummy).when(transport).getDateOfBegin();
@@ -747,15 +735,10 @@ public class TransportCompanyTest {
 
     @Test
     public void getVehiclesThatMeetsRequest_EmptyList_NoVehiclesFound_TransportTypeMismatch() {
-        ArrayList<Vehicle> employees = new ArrayList<>();
-        employees.add(vehicle);
-        //doReturn(TRANSPORT_TYPE.PRODUCT).when(vehicle).getTransportType();
-        //doReturn(TRANSPORT_TYPE.PASSENGER).when(cargo).getCargoType();
-
-        //doReturn(employees).when(transportCompany).getVehicles();
-
+        //arrange & act
         List<Employee> actual = transportCompany.employeesThatCanDriveSpecificVehicle(CATEGORY.C);
 
+        //assert
         assertTrue(actual.isEmpty());
     }
 
@@ -763,14 +746,14 @@ public class TransportCompanyTest {
     public void getVehiclesThatMeetsRequest_EmptyList_NoVehiclesFound_MaximumCapacityMismatch() {
         ArrayList<Vehicle> employees = new ArrayList<>();
         employees.add(vehicle);
-        //doReturn(TRANSPORT_TYPE.PRODUCT).when(vehicle).getTransportType();
-        //doReturn(TRANSPORT_TYPE.PRODUCT).when(cargo).getCargoType();
-        //doReturn(5.0).when(vehicle).getMaximumCapacity();
-        //doReturn(6.0).when(cargo).getNecessaryInformation();
+        doReturn(TRANSPORT_TYPE.PRODUCT).when(vehicle).getTransportType();
+        doReturn(TRANSPORT_TYPE.PRODUCT).when(cargo).getCargoType();
+        doReturn(5.0).when(vehicle).getMaximumCapacity();
+        doReturn(6.0).when(cargo).getNecessaryInformation();
 
-        //doReturn(employees).when(transportCompany).getVehicles();
+        doReturn(employees).when(transportCompany).getVehicles();
 
-        List<Employee> actual = transportCompany.employeesThatCanDriveSpecificVehicle(CATEGORY.C);
+        List<Vehicle> actual = transportCompany.getVehiclesThatMeetsRequest(cargo);
 
         assertTrue(actual.isEmpty());
     }
@@ -866,14 +849,8 @@ public class TransportCompanyTest {
     @Test
     public void writeTransportsToFile_False_TransportAreNotWritten() {
         //arrange
-        File LocationToWrite = Paths.get("src/kartofi/resources/dummySerialisation.ser").toFile();
+        File LocationToWrite = Paths.get("src/notMain/resources/dummySerialisation.ser").toFile();
 
-        Map<Transport, Client> map = new HashMap<>();
-        map.put(transport, client);
-        map.put(transport1, client);
-        map.put(transport2, client);
-
-        //doReturn(map).when(transportCompany).getTransportsLikeMap();
 
         //act
         boolean result = transportCompany.writeTransportsToFile(LocationToWrite);
@@ -915,7 +892,7 @@ public class TransportCompanyTest {
 
         transportCompany.writeTransportsToFile(LocationToWrite);
 
-        LocationToWrite = Paths.get("src/notmain/resources/dummySerialisation.ser").toFile();
+        LocationToWrite = Paths.get("src/notMain/resources/dummySerialisation.ser").toFile();
         //act
         Map<Transport, Client> actual = transportCompany.readTransportsFromFile(LocationToWrite);
 
@@ -954,15 +931,12 @@ public class TransportCompanyTest {
 
         doReturn(map).when(transportCompany).readTransportsFromFile(LocationToWrite);
 
-        Map<Transport, Client> mapForCompany = new HashMap<>();
-
-        //doReturn(mapForCompany).when(transportCompany).getTransportsLikeMap();
         //act
         boolean result = transportCompany.readAndWriteTransportsToCompany(LocationToWrite);
 
         //assert
         assertFalse(result);
-        assertEquals(0, mapForCompany.size());
+        assertEquals(0, transportCompany.getTransports().size());
     }
 
     @Test
