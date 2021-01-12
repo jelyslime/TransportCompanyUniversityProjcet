@@ -154,6 +154,13 @@ public class Vehicle {
                 '}';
     }
 
+    /**
+     * Compare this {@code Vehicle} with the specified {@code Object } for equality.
+     *
+     * @param o {@code Object} to which this {@code Vehicle} is to be compared.
+     * @return {@code true} if the specified {@code Object} is a {@code Vehicle}
+     * which values are equal to {@code Vehicle}'s
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -167,6 +174,11 @@ public class Vehicle {
                 vehicleType == vehicle.vehicleType;
     }
 
+    /**
+     * Returns the hash code for this {@code Transport}.
+     *
+     * @return hash code for this {@code Transport}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(vehicleId, categoryRequired, pricePerKm, transportType, vehicleType, maximumCapacity);

@@ -2,8 +2,16 @@ package Persons;
 
 import java.util.Objects;
 
+/**
+ * Mutable class. A {@code Person} consists of logical information for
+ * an person
+ * <p>
+ * It contains information for the person's name.
+ *
+ * @author Vladislav Zlatanov
+ */
 public abstract class Person {
-    private String name;
+    private String name; //name of the persons
 
     public Person(String name) {
         this.name = name;
@@ -17,6 +25,11 @@ public abstract class Person {
         return name;
     }
 
+    /**
+     * auto-generated setter.
+     * @param name name of the person
+     *             @throws IllegalArgumentException when argument is null.
+     */
     public void setName(String name) {
         if (Objects.isNull(name)) {
             throw new IllegalArgumentException("Argument is null.");
@@ -24,6 +37,13 @@ public abstract class Person {
         this.name = name;
     }
 
+    /**
+     * Compare this {@code Person} with the specified {@code Object } for equality.
+     *
+     * @param o {@code Object} to which this {@code Person} is to be compared.
+     * @return {@code true} if the specified {@code Object} is a {@code Person}
+     * which values are equal to {@code Person}'s
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

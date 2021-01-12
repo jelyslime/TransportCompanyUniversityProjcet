@@ -10,7 +10,7 @@ import Cargos.MaterialCargo;
  * @see MaterialCargo
  */
 public class MaterialArgs implements CargoArgsFor<MaterialCargo> {
-    private double weight;
+    private double weight; //weight of the cargo.
 
     public MaterialArgs(double weight) {
         this.weight = weight;
@@ -24,6 +24,11 @@ public class MaterialArgs implements CargoArgsFor<MaterialCargo> {
         return weight;
     }
 
+    /**
+     * Auto-generated setter
+     * @param weight weight of the cargo
+     * @throws IllegalArgumentException when argument is null.
+     */
     public void setWeight(double weight) {
         if (weight < 0) {
             throw new IllegalArgumentException("Value is negative.");

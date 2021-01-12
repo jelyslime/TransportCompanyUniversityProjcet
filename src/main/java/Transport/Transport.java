@@ -120,6 +120,7 @@ public class Transport implements java.io.Serializable {
      * Sets the date of begin.
      *
      * @param dateOfBegin date to be set.
+     *                    @throws IllegalArgumentException when argument is null.
      */
     public void setDateOfBegin(Date dateOfBegin) {
         if (Objects.isNull(dateOfBegin)){
@@ -139,6 +140,7 @@ public class Transport implements java.io.Serializable {
      * Sets the date of ending.
      *
      * @param dateOfEnd date to be set.
+     *                  @throws IllegalArgumentException when argument is null.
      */
     public void setDateOfEnd(Date dateOfEnd) {
         if (Objects.isNull(dateOfEnd)){
@@ -174,6 +176,7 @@ public class Transport implements java.io.Serializable {
      * Sets the client who wants the transportation.
      *
      * @param client client to be set.
+     *               @throws IllegalArgumentException when argument is null.
      */
     public void setClient(Client client) {
         if (Objects.isNull(client)){
@@ -193,6 +196,7 @@ public class Transport implements java.io.Serializable {
      * Sets the cargo which will be transported.
      *
      * @param cargoToBeTransported cargo to be set.
+     *                             @throws IllegalArgumentException when argument is null.
      */
     public void setCargoToBeTransported(Cargo cargoToBeTransported) {
         if (Objects.isNull(cargoToBeTransported)){
@@ -228,6 +232,7 @@ public class Transport implements java.io.Serializable {
      * Sets the price for the transportation.
      *
      * @param priceForTransport price to be set.
+     *                          @throws IllegalArgumentException when argument is null.
      */
     public void setPriceForTransport(BigDecimal priceForTransport) {
         if (Objects.isNull(priceForTransport)){
@@ -247,6 +252,7 @@ public class Transport implements java.io.Serializable {
      * Sets the driver that is going to do the transport.
      *
      * @param driver driver to be set.
+     *               @throws IllegalArgumentException when argument is null.
      */
     public void setDriver(Employee driver) {
         if (Objects.isNull(driver)){
@@ -266,6 +272,7 @@ public class Transport implements java.io.Serializable {
      * Sets the vehicle that is going to be used for the transport
      *
      * @param vehicle vehicle to be set.
+     *                @throws IllegalArgumentException when argument is null.
      */
     public void setVehicle(Vehicle vehicle) {
         if (Objects.isNull(vehicle)){

@@ -15,17 +15,32 @@ import java.util.Objects;
  * @see Cargos.CargoNecessaryInformation
  */
 public abstract class Cargo implements CargoNecessaryInformation {
-    private final TRANSPORT_TYPE type;
+    private final TRANSPORT_TYPE type; //type of the transport
 
+    /**
+     * Protected all-args constructor
+     * @param type type of the transport.
+     */
     protected Cargo(TRANSPORT_TYPE type) {
         this.type = type;
     }
 
 
+    /**
+     * Auto-generated getter
+     * @return type of the transport
+     */
     public TRANSPORT_TYPE getType() {
         return type;
     }
 
+
+    /**
+     * Auto-generated equals
+     *
+     * @param o object to check for equality with this.
+     * @return true if objects are equal, false if objects are not equal.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,6 +49,11 @@ public abstract class Cargo implements CargoNecessaryInformation {
         return type == cargo.type;
     }
 
+    /**
+     * Auto-generated hashCode
+     *
+     * @return hash of this object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(type);

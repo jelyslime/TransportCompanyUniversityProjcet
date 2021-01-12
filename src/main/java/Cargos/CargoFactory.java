@@ -11,7 +11,7 @@ import Cargos.Factory.PeopleArgs;
  * @see CargoArgsFor
  */
 public class CargoFactory {
-    private static CargoFactory cargoFactory = null;
+    private static CargoFactory cargoFactory = null; //single instance of CargoFactory
 
     private CargoFactory() {
 

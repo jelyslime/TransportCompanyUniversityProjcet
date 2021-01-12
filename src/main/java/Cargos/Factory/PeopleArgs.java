@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @see PeoplesCargo
  */
 public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
-    private List<Person> personArrayList;
+    private List<Person> personArrayList; //persons that have to be transported
 
     public PeopleArgs(ArrayList<Person> personArrayList) {
         if (Objects.isNull(personArrayList)) {
@@ -36,6 +36,11 @@ public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
         return personArrayList;
     }
 
+    /**
+     * Auto-generated setter
+     * @param list list of persons that have to be transported.
+     * @throws IllegalArgumentException when argument is null.
+     */
     public void setPersonArrayList(List<Person> list) {
         if (Objects.isNull(list)) {
             throw new IllegalArgumentException("Argument is null");
