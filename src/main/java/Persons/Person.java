@@ -27,8 +27,9 @@ public abstract class Person {
 
     /**
      * auto-generated setter.
+     *
      * @param name name of the person
-     *             @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setName(String name) {
         if (Objects.isNull(name)) {

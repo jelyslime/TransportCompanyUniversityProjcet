@@ -27,9 +27,9 @@ public class Client extends Person {
     /**
      * Protected all args constructor.
      *
-     * @param name name of the client.
+     * @param name   name of the client.
      * @param budget client's budget.
-     * @param cargo cargo that client want to transport.
+     * @param cargo  cargo that client want to transport.
      */
     protected Client(String name, BigDecimal budget, Cargo cargo) {
         super(name);
@@ -49,6 +49,7 @@ public class Client extends Person {
 
     /**
      * auto-generated getter.
+     *
      * @return client's budget.
      */
     public BigDecimal getBudget() {
@@ -59,7 +60,7 @@ public class Client extends Person {
      * auto-generated setter
      *
      * @param budget budget of employee
-     *               @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setBudget(BigDecimal budget) {
         if (Objects.isNull(budget)) {
@@ -70,6 +71,7 @@ public class Client extends Person {
 
     /**
      * auto-generated setter
+     *
      * @return cargo that client wants to transport
      */
     public Cargo getCargo() {
@@ -80,7 +82,7 @@ public class Client extends Person {
      * auto-generated setter
      *
      * @param cargo cargo that client wants to transport
-     *              @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setCargo(Cargo cargo) {
         if (Objects.isNull(cargo)) {

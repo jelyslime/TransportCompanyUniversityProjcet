@@ -288,42 +288,42 @@ public class TransportCompany implements Comparable<TransportCompany> {
     /**
      * Method creates new transport from client request.
      *
-     * @param begin date when transport begins.
-     * @param end date when transport ends.
-     * @param client client who requests the transport.
-     * @param isPayed is client paying the transport.
+     * @param begin    date when transport begins.
+     * @param end      date when transport ends.
+     * @param client   client who requests the transport.
+     * @param isPayed  is client paying the transport.
      * @param distance destination of the transport.
      * @return true if transportation is accepted/ false if it's not
      */
-    public boolean assignTransport(Date begin,Date end, Client client, boolean isPayed,double distance){
-        if (Objects.isNull(begin) ||Objects.isNull(end) || Objects.isNull(client)){
+    public boolean assignTransport(Date begin, Date end, Client client, boolean isPayed, double distance) {
+        if (Objects.isNull(begin) || Objects.isNull(end) || Objects.isNull(client)) {
             throw new IllegalArgumentException("There is an null argument.");
         }
-        Vehicle vehicleForTransportation = availableVehicle(client.getCargo(),begin,end);
+        Vehicle vehicleForTransportation = availableVehicle(client.getCargo(), begin, end);
 
-        if (Objects.isNull(vehicleForTransportation)){
+        if (Objects.isNull(vehicleForTransportation)) {
             System.out.println("Sorry, No available vehicles for the transportation.");
             return false;
         }
 
-        Employee driver = availableEmployee(vehicleForTransportation.getCategoryRequired(),begin,end);
+        Employee driver = availableEmployee(vehicleForTransportation.getCategoryRequired(), begin, end);
 
-        if (Objects.isNull(driver)){
+        if (Objects.isNull(driver)) {
             System.out.println("Sorry, No available drivers for the transportation.");
             return false;
         }
 
-       Transport transport = new Transport.TransportBuilder()
-                            .withDriver(driver)
-                            .withVehicle(vehicleForTransportation)
-                            .withClient(client)
-                            .withDestination(distance)
-                            .withCargo(client.getCargo())
-                            .withDateOfBegin(begin)
-                            .withDateOfEnd(end)
-                            .build();
+        Transport transport = new Transport.TransportBuilder()
+                .withDriver(driver)
+                .withVehicle(vehicleForTransportation)
+                .withClient(client)
+                .withDestination(distance)
+                .withCargo(client.getCargo())
+                .withDateOfBegin(begin)
+                .withDateOfEnd(end)
+                .build();
 
-        addToEarningsIfEmployeePaysTransport(transport,client,isPayed);
+        addToEarningsIfEmployeePaysTransport(transport, client, isPayed);
 
         this.addTransport(transport);
 
@@ -334,17 +334,16 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * Method adds transport price to earnings if client have enough money and is paying the transport.
      *
      * @param transport transport that will be checked
-     * @param client client who pays the transport
-     * @param isPayed flag which shows if the client is paying
+     * @param client    client who pays the transport
+     * @param isPayed   flag which shows if the client is paying
      */
-    protected void addToEarningsIfEmployeePaysTransport(Transport transport,Client client, boolean isPayed){
-        if (isPayed){
+    protected void addToEarningsIfEmployeePaysTransport(Transport transport, Client client, boolean isPayed) {
+        if (isPayed) {
             BigDecimal price = transport.getPriceForTransport();
-            if (client.getBudget().subtract(price).compareTo(BigDecimal.ZERO)>0){
+            if (client.getBudget().subtract(price).compareTo(BigDecimal.ZERO) > 0) {
                 System.out.println("Insufficient funds. Cannot pay transportation.");
                 transport.setPayed(false);
-            }
-            else {
+            } else {
                 this.increaseEarnings(price);
                 client.setBudget(client.getBudget().subtract(price));
                 transport.setPayed(true);
@@ -356,15 +355,16 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
     /**
      * Checks if there is any employee which haves the required category and he is available from date begin to date end
+     *
      * @param categoryRequired category required
-     * @param begin date from which the transport begins.
-     * @param end date from which the transport ends.
+     * @param begin            date from which the transport begins.
+     * @param end              date from which the transport ends.
      * @return Available employee.
      */
-    protected Employee availableEmployee(CATEGORY categoryRequired, Date begin, Date end){
+    protected Employee availableEmployee(CATEGORY categoryRequired, Date begin, Date end) {
         List<Employee> employeesWhoCanDriveVehicle = employeesThatCanDriveSpecificVehicle(categoryRequired);
-        employeesWhoCanDriveVehicle = employeesAvailableAtPeriod(employeesWhoCanDriveVehicle,begin,end);
-        if (employeesWhoCanDriveVehicle.isEmpty()){
+        employeesWhoCanDriveVehicle = employeesAvailableAtPeriod(employeesWhoCanDriveVehicle, begin, end);
+        if (employeesWhoCanDriveVehicle.isEmpty()) {
             return null;
         } else {
             return employeesWhoCanDriveVehicle.get(0);
@@ -376,13 +376,13 @@ public class TransportCompany implements Comparable<TransportCompany> {
      *
      * @param cargo information about the cargo which will be transported
      * @param begin date from which the transport begins
-     * @param end date from which the transport ends
+     * @param end   date from which the transport ends
      * @return Available vehicle
      */
-    protected Vehicle availableVehicle(CargoNecessaryInformation cargo,Date begin,Date end){
+    protected Vehicle availableVehicle(CargoNecessaryInformation cargo, Date begin, Date end) {
         List<Vehicle> vehicles = getVehiclesThatMeetsRequest(cargo);
-        vehicles = vehiclesThatAreAvailableOnPeriod(vehicles,begin,end);
-        if (vehicles.isEmpty()){
+        vehicles = vehiclesThatAreAvailableOnPeriod(vehicles, begin, end);
+        if (vehicles.isEmpty()) {
             return null;
         } else {
             return vehicles.get(0);
@@ -391,12 +391,13 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
     /**
      * Checks all employees who are available from date begin to date end
+     *
      * @param employees employees who are going to be checked
-     * @param begin date of begin
-     * @param end date of end
+     * @param begin     date of begin
+     * @param end       date of end
      * @return List of available employees.
      */
-    protected List<Employee> employeesAvailableAtPeriod(List<Employee> employees, Date begin, Date end){
+    protected List<Employee> employeesAvailableAtPeriod(List<Employee> employees, Date begin, Date end) {
         List<Employee> availableEmployeesInSystem = getTransports()
                 .stream()
                 .filter(transport -> employees.contains(transport.getDriver()))
@@ -415,10 +416,11 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
     /**
      * Checks all employee which driving license meets category requirements
+     *
      * @param category driving license category
      * @return List of employees who match the criteria.
      */
-    protected List<Employee> employeesThatCanDriveSpecificVehicle(CATEGORY category){
+    protected List<Employee> employeesThatCanDriveSpecificVehicle(CATEGORY category) {
         return getEmployees()
                 .stream()
                 .filter(employee -> employee.getCategory().equals(category))
@@ -428,12 +430,13 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
     /**
      * Checks if vehicles from list are available on given period.
+     *
      * @param vehicles vehicles to be checked
-     * @param begin begin of the period
-     * @param end end of the period
+     * @param begin    begin of the period
+     * @param end      end of the period
      * @return List of all available vehicles.
      */
-    protected List<Vehicle> vehiclesThatAreAvailableOnPeriod(List<Vehicle> vehicles,Date begin,Date end){
+    protected List<Vehicle> vehiclesThatAreAvailableOnPeriod(List<Vehicle> vehicles, Date begin, Date end) {
         List<Vehicle> availableVehiclesInSystem = getTransports()
                 .stream()
                 .filter(transport -> vehicles.contains(transport.getVehicle()))
@@ -452,14 +455,15 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
     /**
      * Checks vehicles from company list that meets the given criteria.
+     *
      * @param cargo information about the cargo.
      * @return List of all vehicles who match the criteria.
      */
-    protected List<Vehicle> getVehiclesThatMeetsRequest(CargoNecessaryInformation cargo){
+    protected List<Vehicle> getVehiclesThatMeetsRequest(CargoNecessaryInformation cargo) {
         List<Vehicle> vehiclesThatMeetRequest = this.getVehicles()
                 .stream()
                 .filter(vehicle -> vehicle.getTransportType().equals(cargo.getCargoType()))
-                .filter(vehicle -> vehicle.getMaximumCapacity()>=cargo.getNecessaryInformation())
+                .filter(vehicle -> vehicle.getMaximumCapacity() >= cargo.getNecessaryInformation())
                 .collect(Collectors.toList());
 
 
@@ -684,7 +688,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * Auto-generated setter.
      *
      * @param companyName new company name.
-     *                    @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setCompanyName(String companyName) {
         if (Objects.isNull(companyName)) {
@@ -706,7 +710,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * Auto-generated setter.
      *
      * @param vehicles new company vehicles list.
-     *                 @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setVehicles(List<Vehicle> vehicles) {
         if (Objects.isNull(vehicles)) {
@@ -731,7 +735,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * Auto-generated setter.
      *
      * @param employees new company employees list.
-     *                  @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setEmployees(List<Employee> employees) {
         if (Objects.isNull(employees)) {
@@ -768,8 +772,9 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
     /**
      * Auto-generated setter
+     *
      * @param transports transports for company.
-     *                   @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setTransports(List<Transport> transports) {
         if (Objects.isNull(transports)) {
@@ -805,7 +810,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * Auto-generated setter.
      *
      * @param earnings new company earnings.
-     *                 @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setEarnings(BigDecimal earnings) {
         if (Objects.isNull(earnings)) {
@@ -827,7 +832,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * Auto-generated setter.
      *
      * @param clients new list of clients working with this company.
-     *                @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setClients(List<Client> clients) {
         if (Objects.isNull(clients)) {

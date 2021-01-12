@@ -4,6 +4,7 @@ import utility.CATEGORY;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+
 /**
  * Mutable class. A {@code Employee} consists of logical information for
  * employees working in the company.
@@ -24,8 +25,8 @@ public class Employee extends Person {
     /**
      * Protected all args constructor.
      *
-     * @param name name of employee
-     * @param salary employee salary
+     * @param name     name of employee
+     * @param salary   employee salary
      * @param category category of driving license
      */
     protected Employee(String name, BigDecimal salary, CATEGORY category) {
@@ -45,6 +46,7 @@ public class Employee extends Person {
 
     /**
      * Auto generated getter
+     *
      * @return employee salary
      */
     public BigDecimal getSalary() {
@@ -55,7 +57,7 @@ public class Employee extends Person {
      * setter
      *
      * @param salary sets salary of employee
-     *               @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setSalary(BigDecimal salary) {
         if (Objects.isNull(salary)) {
@@ -66,6 +68,7 @@ public class Employee extends Person {
 
     /**
      * getter
+     *
      * @return driving license category of employee.
      */
     public CATEGORY getCategory() {
@@ -73,9 +76,8 @@ public class Employee extends Person {
     }
 
     /**
-     *
      * @param category driving license category
-     *                 @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setCategory(CATEGORY category) {
         if (Objects.isNull(category)) {
