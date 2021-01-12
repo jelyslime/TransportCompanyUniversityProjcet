@@ -4,6 +4,7 @@ package Vehicles;
 import utility.CATEGORY;
 import utility.TRANSPORT_TYPE;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ import java.util.Objects;
  *
  * @see VechicleBuilder
  */
-public class Vehicle {
+public class Vehicle implements Serializable {
     final int vehicleId = VechiclesIdCounterSingleton.getInstance()
             .counter.incrementAndGet(); //auto generated id
     private CATEGORY categoryRequired; //Category required for the vehicle to be driven.

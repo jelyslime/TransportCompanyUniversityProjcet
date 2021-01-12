@@ -4,6 +4,7 @@ import Cargos.Cargo;
 import Cargos.CargoFactory;
 import Cargos.Factory.MaterialArgs;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ import java.util.Objects;
  *
  * @author Vladislav Zlatanov
  */
-public class Client extends Person {
+public class Client extends Person implements Serializable {
     private BigDecimal budget; //Client's budget
     private Cargo cargo; //Cargo to be transported
 

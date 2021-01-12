@@ -261,7 +261,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @param valueToIncrease value to add.
      */
     public void increaseEarnings(BigDecimal valueToIncrease) {
-        if (Objects.isNull(valueToIncrease)){
+        if (Objects.isNull(valueToIncrease)) {
             throw new IllegalArgumentException("Argument is null");
         }
         setEarnings(getEarnings().add(valueToIncrease));
@@ -318,8 +318,8 @@ public class TransportCompany implements Comparable<TransportCompany> {
             return false;
         }
 
-        Transport transport = createNewTransport(driver,vehicleForTransportation,client,distance,
-                client.getCargo(),begin,end);
+        Transport transport = createNewTransport(driver, vehicleForTransportation, client, distance,
+                client.getCargo(), begin, end);
 
 
         addToEarningsIfEmployeePaysTransport(transport, client, isPayed);
@@ -330,8 +330,8 @@ public class TransportCompany implements Comparable<TransportCompany> {
     }
 
     protected Transport createNewTransport(Employee driver, Vehicle vehicle,
-                                           Client client, double distance,Cargo cargo,
-                                           Date begin,Date end){
+                                           Client client, double distance, Cargo cargo,
+                                           Date begin, Date end) {
         Transport transport = new Transport.TransportBuilder()
                 .withDriver(driver)
                 .withVehicle(vehicle)
@@ -345,6 +345,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
         return transport;
 
     }
+
     /**
      * Method adds transport price to earnings if client have enough money and is paying the transport.
      *
@@ -445,6 +446,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
     }
 
     //TODO: FROM HERE BELOW NO TESTS.
+
     /**
      * Checks if vehicles from list are available on given period.
      *
@@ -462,12 +464,14 @@ public class TransportCompany implements Comparable<TransportCompany> {
                 .distinct()
                 .collect(Collectors.toList());
 
-        availableVehiclesInSystem.addAll(vehicles);
+        vehicles.removeAll(availableVehiclesInSystem); //removes all vehicles found in transports
+        availableVehiclesInSystem.addAll(vehicles); //then add all vehicles who are in list to the result one
+        //this is done because in vehicles are all vehicles who meet the criteria for an concreate
+        //transport. Thus, there may be vehicles who meet the criteria but were never used for transports by far.
+        //for this reason all matches are removed and then only the unique which are never used for
+        //transports are added back to the list.
 
-        return availableVehiclesInSystem
-                .stream()
-                .distinct()
-                .collect(Collectors.toList());
+        return availableVehiclesInSystem;
     }
 
     /**
@@ -495,7 +499,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
     public List<Employee> sortEmployee() {
         List<Employee> employees = getEmployees()
                 .stream()
-                .sorted(Comparator.comparing(Employee::getSalary).thenComparing(Employee::getCategory))
+                .sorted(Comparator.comparing(Employee::getSalary).thenComparing(Employee::getCategory).reversed())
                 .collect(Collectors.toList());
         return employees;
     }
@@ -506,10 +510,9 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return Sorted list of {@link Transport}s
      */
     public List<Transport> sortTransports() {
-        List<Transport> transports = getTransportsLikeMap().entrySet()
+        List<Transport> transports = getTransports()
                 .stream()
-                .map(entry -> entry.getKey())
-                .sorted(Comparator.comparing(Transport::getDestination))
+                .sorted(Comparator.comparing(Transport::getDestination).reversed())
                 .collect(Collectors.toList());
 
         return transports;
@@ -528,10 +531,10 @@ public class TransportCompany implements Comparable<TransportCompany> {
             writer.writeObject(this.getTransportsLikeMap());
             return true;
         } catch (IOException e) {
-            //log exception.
-            return false;
+            //log error
+            System.out.println(e);
         }
-
+        return false;
     }
 
     /**
@@ -542,14 +545,15 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @param file {@link File} to be read from.
      * @return list of transports read from file.
      */
-    public List<Transport> readTransportsFromFile(File file) {
-        List<Transport> list = new ArrayList<>();
+    public Map<Transport, Client> readTransportsFromFile(File file) {
+        Map<Transport, Client> map = new HashMap<>();
         try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(file))) {
-            list = (List<Transport>) reader.readObject();
-            return list;
+            map = (Map<Transport, Client>) reader.readObject();
+            return map;
         } catch (IOException | ClassNotFoundException e) {
-            return list;
+            System.out.println(e);
         }
+        return map;
     }
 
     /**
@@ -561,13 +565,13 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return true if any data was written to list/ false if no date was written.
      */
     public boolean readAndWriteTransportsToCompany(File file) {
-        List<Transport> list = this.readTransportsFromFile(file);
-        if (list.isEmpty()) {
+        Map<Transport, Client> map = this.readTransportsFromFile(file);
+        if (map.isEmpty()) {
             return false;
         }
 
-        for (Transport transport : list) {
-            this.getTransportsLikeMap().putIfAbsent(transport, transport.getClient());
+        for (Map.Entry<Transport, Client> transport : map.entrySet()) {
+            this.getTransportsLikeMap().putIfAbsent(transport.getKey(), transport.getValue());
         }
         return true;
     }
@@ -580,15 +584,14 @@ public class TransportCompany implements Comparable<TransportCompany> {
     public String reportHowManyTransportsHaveBeenMade() {
         Date date = new Date();
 
-        List<Transport> transports = this.getTransportsLikeMap()
-                .entrySet()
+        List<Transport> transports = this.getTransports()
                 .stream()
-                .map(entry -> entry.getKey())
                 .filter(transport -> transport.getDateOfEnd().before(date))
                 .collect(Collectors.toList());
 
         return "All transports made to current date: " + Integer.valueOf(transports.size()).toString();
     }
+
 
     /**
      * Reports how many money were made from transport from the first transport to the current date.
@@ -598,10 +601,8 @@ public class TransportCompany implements Comparable<TransportCompany> {
     public String reportSumOfMadeTransports() {
         Date date = new Date();
 
-        BigDecimal money = this.getTransportsLikeMap()
-                .entrySet()
+        BigDecimal money = this.getTransports()
                 .stream()
-                .map(entry -> entry.getKey())
                 .filter(transport -> transport.getDateOfEnd().before(date))
                 .map(transport -> transport.getPriceForTransport())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -642,10 +643,8 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return report as {@link String}
      */
     public String earningsOnPeriod(Date begin, Date end) {
-        BigDecimal money = this.getTransportsLikeMap()
-                .entrySet()
+        BigDecimal money = this.getTransports()
                 .stream()
-                .map(entry -> entry.getKey())
                 .filter(transport -> transport.getDateOfBegin().after(begin) && transport.getDateOfEnd().before(end))
                 .map(moneyToSum -> moneyToSum.getPriceForTransport())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -662,10 +661,8 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return report as {@link String}
      */
     public String earningsOnPeriodFromEmployee(Date begin, Date end, Employee employee) {
-        BigDecimal money = this.getTransportsLikeMap()
-                .entrySet()
+        BigDecimal money = this.getTransports()
                 .stream()
-                .map(entry -> entry.getKey())
                 .filter(transport -> transport.getDateOfBegin().after(begin) && transport.getDateOfEnd().before(end))
                 .filter(transport -> transport.getDriver().equals(employee))
                 .map(moneyToSum -> moneyToSum.getPriceForTransport())
@@ -681,11 +678,9 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @param employee {@link Employee} to check.
      * @return times employee drove.
      */
-    private int timesDrove(Employee employee) {
-        long times = this.getTransportsLikeMap()
-                .entrySet()
+    protected int timesDrove(Employee employee) {
+        long times = this.getTransports()
                 .stream()
-                .map(entry -> entry.getKey())
                 .filter(transport -> transport.getDriver().equals(employee))
                 .count();
 
@@ -769,7 +764,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      *
      * @return transports.
      */
-    private Map<Transport, Client> getTransportsLikeMap() {
+    protected Map<Transport, Client> getTransportsLikeMap() {
         return transports;
     }
 
@@ -971,38 +966,12 @@ public class TransportCompany implements Comparable<TransportCompany> {
         }
 
         /**
-         * Test purpose only.
-         * @param vehicles
-         * @return
-         */
-        public TransportCompanyBuilder withVehiclesNoNullCheck(List<Vehicle> vehicles) {
-            this.withVehicles = vehicles;
-
-            return this;
-        }
-
-
-        /**
          * Sets object local property to the one from the parameter.
          *
          * @param employees List of {@link Employee} who work for the company.
          * @return this.
          */
         public TransportCompanyBuilder withEmployees(List<Employee> employees) {
-            this.withEmployees = employees
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-
-            return this;
-        }
-
-        /**
-         * Test purpose only.
-         * @param employees
-         * @return
-         */
-        protected TransportCompanyBuilder withEmployeesNoNullChecks(List<Employee> employees) {
             this.withEmployees = employees
                     .stream()
                     .filter(Objects::nonNull)
@@ -1039,11 +1008,6 @@ public class TransportCompany implements Comparable<TransportCompany> {
             return this;
         }
 
-        protected TransportCompanyBuilder withTransportsNoNullChecks(Map<Transport, Client> transports) {
-            this.withTransports = transports;
-            return this;
-        }
-
         /**
          * Sets object local property to the one from the parameter.
          *
@@ -1070,16 +1034,6 @@ public class TransportCompany implements Comparable<TransportCompany> {
             return this;
         }
 
-        /**
-         * Test purpose only!
-         * @param clients
-         * @return
-         */
-        protected TransportCompanyBuilder withClientsNoNullCheck(List<Client> clients) {
-            this.withClients = clients;
-
-            return this;
-        }
 
         /**
          * Builds and returns instance of {@link TransportCompany}

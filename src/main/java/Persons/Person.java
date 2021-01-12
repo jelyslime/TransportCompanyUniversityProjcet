@@ -1,5 +1,6 @@
 package Persons;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects;
  *
  * @author Vladislav Zlatanov
  */
-public abstract class Person {
+public abstract class Person implements Serializable {
     private String name; //name of the persons
 
     public Person(String name) {

@@ -1,6 +1,7 @@
 package TransportCompany;
 
 import Cargos.Cargo;
+import Cargos.CargoNecessaryInformation;
 import Persons.Client;
 import Persons.Employee;
 import Transport.Transport;
@@ -13,11 +14,11 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import utility.CATEGORY;
-import utility.FeeCalculation.GenericFeeCalculator;
 import utility.TRANSPORT_TYPE;
 
+import java.io.File;
 import java.math.BigDecimal;
-import java.text.DateFormat;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.*;
 
@@ -64,10 +65,19 @@ public class TransportCompanyTest {
     Employee employee1;
 
     @Mock
+    Employee employee2;
+
+    @Mock
     Client client1;
 
     @Mock
     Transport transport;
+
+    @Mock
+    Transport transport1;
+
+    @Mock
+    Transport transport2;
 
     @Mock
     BigDecimal bigDecimal;
@@ -76,6 +86,10 @@ public class TransportCompanyTest {
     Date begin;
     @Mock
     Date end;
+
+    @Mock
+    Vehicle vehicle1;
+
 
     @Spy
     @InjectMocks
@@ -470,7 +484,7 @@ public class TransportCompanyTest {
         //arrange
 
         doReturn(cargo).when(client).getCargo();
-        doReturn(null).when(transportCompany).availableVehicle(cargo,begin,end);
+        doReturn(null).when(transportCompany).availableVehicle(cargo, begin, end);
         //act
         boolean result = transportCompany
                 .assignTransport(begin, end, client, false, 33);
@@ -482,11 +496,11 @@ public class TransportCompanyTest {
     public void assignTransport_False_NoAvailableEmployees() {
         //arrange
         doReturn(cargo).when(client).getCargo();
-        doReturn(vehicle).when(transportCompany).availableVehicle(cargo,begin,end);
+        doReturn(vehicle).when(transportCompany).availableVehicle(cargo, begin, end);
         doReturn(category).when(vehicle).getCategoryRequired();
         doReturn(null)
                 .when(transportCompany)
-                .availableEmployee(category,begin,end);
+                .availableEmployee(category, begin, end);
         //act
         boolean result = transportCompany
                 .assignTransport(begin, end, client, false, 33);
@@ -498,14 +512,14 @@ public class TransportCompanyTest {
     public void assignTransport_True_TransportIsAdded() {
         //arrange
         doReturn(cargo).when(client).getCargo();
-        doReturn(vehicle).when(transportCompany).availableVehicle(cargo,begin,end);
+        doReturn(vehicle).when(transportCompany).availableVehicle(cargo, begin, end);
         doReturn(category).when(vehicle).getCategoryRequired();
         doReturn(employee)
                 .when(transportCompany)
-                .availableEmployee(category,begin,end);
+                .availableEmployee(category, begin, end);
         doReturn(transport)
                 .when(transportCompany)
-                .createNewTransport(employee,vehicle,client,33,cargo,begin,end);
+                .createNewTransport(employee, vehicle, client, 33, cargo, begin, end);
         //act
         boolean result = transportCompany
                 .assignTransport(begin, end, client, false, 33);
@@ -520,8 +534,8 @@ public class TransportCompanyTest {
     }
 
     @Test
-    public void createNewTransport_CreatesTransport(){
-       //arrange
+    public void createNewTransport_CreatesTransport() {
+        //arrange
         doReturn(cargo).when(client).getCargo();
         doReturn(TRANSPORT_TYPE.PASSENGER).when(cargo).getCargoType();
 
@@ -537,76 +551,75 @@ public class TransportCompanyTest {
 
         //act
         Transport actual = transportCompany
-                .createNewTransport(employee,vehicle,client,33,cargo,begin,end);
+                .createNewTransport(employee, vehicle, client, 33, cargo, begin, end);
 
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void addToEarningsIfEmployeePaysTransport_AddToEarnings_ClientHavesEnoughMoney(){
+    public void addToEarningsIfEmployeePaysTransport_AddToEarnings_ClientHavesEnoughMoney() {
         doReturn(BigDecimal.ONE).when(transport).getPriceForTransport();
         doReturn(BigDecimal.TEN).when(client).getBudget();
         doReturn(BigDecimal.ONE).when(transportCompany).getEarnings();
 
         //act
-        transportCompany.addToEarningsIfEmployeePaysTransport(transport,client,true);
+        transportCompany.addToEarningsIfEmployeePaysTransport(transport, client, true);
 
         //assert
-        verify(transportCompany,times(1))
+        verify(transportCompany, times(1))
                 .increaseEarnings(transport.getPriceForTransport());
-        verify(client,times(1)).setBudget(BigDecimal.TEN.subtract(transport.getPriceForTransport()));
-        verify(client,times(2)).getBudget();
-        verify(transport,times(1)).setPayed(true);
+        verify(client, times(1)).setBudget(BigDecimal.TEN.subtract(transport.getPriceForTransport()));
+        verify(client, times(2)).getBudget();
+        verify(transport, times(1)).setPayed(true);
     }
 
     @Test
-    public void addToEarningsIfEmployeePaysTransport_DoesNotAddToEarnings_ClientHavesEnoughMoney(){
+    public void addToEarningsIfEmployeePaysTransport_DoesNotAddToEarnings_ClientHavesEnoughMoney() {
         doReturn(BigDecimal.TEN).when(transport).getPriceForTransport();
         doReturn(BigDecimal.ONE).when(client).getBudget();
         doReturn(BigDecimal.ONE).when(transportCompany).getEarnings();
 
         //act
-        transportCompany.addToEarningsIfEmployeePaysTransport(transport,client,true);
+        transportCompany.addToEarningsIfEmployeePaysTransport(transport, client, true);
 
         //assert
-        verify(transportCompany,times(0))
+        verify(transportCompany, times(0))
                 .increaseEarnings(transport.getPriceForTransport());
-        verify(client,times(1)).getBudget();
-        verify(transport,times(1)).setPayed(false);
+        verify(client, times(1)).getBudget();
+        verify(transport, times(1)).setPayed(false);
     }
 
     @Test
-    public void addToEarningsIfEmployeePaysTransport_DoesNotAddToEarnings_ClientDoesNotPay(){
-        doReturn(BigDecimal.TEN).when(transport).getPriceForTransport();
+    public void addToEarningsIfEmployeePaysTransport_DoesNotAddToEarnings_ClientDoesNotPay() {
         doReturn(BigDecimal.ONE).when(client).getBudget();
         doReturn(BigDecimal.ONE).when(transportCompany).getEarnings();
 
         //act
-        transportCompany.addToEarningsIfEmployeePaysTransport(transport,client,false);
+        transportCompany.addToEarningsIfEmployeePaysTransport(transport, client, false);
 
         //assert
-        verify(transport,times(1)).setPayed(false);
+        verify(transport, times(1)).setPayed(false);
     }
 
     @Test
-    public void availableEmployee_null_IfNoEmployeeFind(){
+    public void availableEmployee_null_IfNoEmployeeFind() {
         //arrange
         doReturn(employeeList)
                 .when(transportCompany)
                 .employeesThatCanDriveSpecificVehicle(category);
         doReturn(employeeList)
                 .when(transportCompany)
-                .employeesAvailableAtPeriod(employeeList,begin,end);
+                .employeesAvailableAtPeriod(employeeList, begin, end);
 
         //act
 
-        Employee employee = transportCompany.availableEmployee(category,begin,end);
+        Employee employee = transportCompany.availableEmployee(category, begin, end);
 
         assertTrue(Objects.isNull(employee));
     }
 
     @Test
-    public void availableEmployee_Employee_EmployeeFound(){
+    public void availableEmployee_Employee_EmployeeFound() {
         //arrange
         List<Employee> employees = new ArrayList<>();
         employees.add(employee);
@@ -616,34 +629,34 @@ public class TransportCompanyTest {
                 .employeesThatCanDriveSpecificVehicle(category);
         doReturn(employees)
                 .when(transportCompany)
-                .employeesAvailableAtPeriod(employeeList,begin,end);
+                .employeesAvailableAtPeriod(employeeList, begin, end);
 
         //act
 
-        Employee actual = transportCompany.availableEmployee(category,begin,end);
+        Employee actual = transportCompany.availableEmployee(category, begin, end);
 
-        assertEquals(employee,actual);
+        assertEquals(employee, actual);
     }
 
     @Test
-    public void availableVehicle_null_IfNoEmployeeFind(){
+    public void availableVehicle_null_IfNoEmployeeFind() {
         //arrange
         doReturn(vehicles)
                 .when(transportCompany)
                 .getVehiclesThatMeetsRequest(cargo);
         doReturn(vehicles)
                 .when(transportCompany)
-                .vehiclesThatAreAvailableOnPeriod(vehicles,begin,end);
+                .vehiclesThatAreAvailableOnPeriod(vehicles, begin, end);
 
         //act
 
-        Vehicle vehicle = transportCompany.availableVehicle(cargo,begin,end);
+        Vehicle vehicle = transportCompany.availableVehicle(cargo, begin, end);
 
         assertTrue(Objects.isNull(vehicle));
     }
 
     @Test
-    public void availableVehicle_Vehicle_VehicleFound(){
+    public void availableVehicle_Vehicle_VehicleFound() {
         //arrange
         List<Vehicle> vehicles = new ArrayList<>();
         vehicles.add(vehicle);
@@ -653,13 +666,13 @@ public class TransportCompanyTest {
                 .getVehiclesThatMeetsRequest(cargo);
         doReturn(vehicles)
                 .when(transportCompany)
-                .vehiclesThatAreAvailableOnPeriod(vehicles,begin,end);
+                .vehiclesThatAreAvailableOnPeriod(vehicles, begin, end);
 
         //act
 
-        Vehicle refactor = transportCompany.availableVehicle(cargo,begin,end);
+        Vehicle refactor = transportCompany.availableVehicle(cargo, begin, end);
 
-        assertEquals(vehicle,refactor);
+        assertEquals(vehicle, refactor);
     }
 
     @Test
@@ -679,15 +692,15 @@ public class TransportCompanyTest {
         employees.add(employee);
 
         //act
-        List<Employee> actual = transportCompany.employeesAvailableAtPeriod(employees,new GregorianCalendar(2014, Calendar.FEBRUARY, 12).getTime(),
+        List<Employee> actual = transportCompany.employeesAvailableAtPeriod(employees, new GregorianCalendar(2014, Calendar.FEBRUARY, 12).getTime(),
                 new GregorianCalendar(2014, Calendar.FEBRUARY, 14).getTime());
 
         //assert
-        assertEquals(employees,actual);
+        assertEquals(employees, actual);
     }
 
     @Test
-    public void employeesThatCanDriveSpecificVehicle_ListOfEmployeeWhoHaveNeededCategory(){
+    public void employeesThatCanDriveSpecificVehicle_ListOfEmployeeWhoHaveNeededCategory() {
         ArrayList<Employee> employees = new ArrayList<>();
         employees.add(employee);
         doReturn(CATEGORY.D).when(employee).getCategory();
@@ -695,11 +708,11 @@ public class TransportCompanyTest {
 
         List<Employee> actual = transportCompany.employeesThatCanDriveSpecificVehicle(CATEGORY.D);
 
-        assertEquals(employees,actual);
+        assertEquals(employees, actual);
     }
 
     @Test
-    public void employeesThatCanDriveSpecificVehicle_EmptyList_NoEmployeeFound(){
+    public void employeesThatCanDriveSpecificVehicle_EmptyList_NoEmployeeFound() {
         ArrayList<Employee> employees = new ArrayList<>();
         employees.add(employee);
         doReturn(CATEGORY.D).when(employee).getCategory();
@@ -708,5 +721,654 @@ public class TransportCompanyTest {
         List<Employee> actual = transportCompany.employeesThatCanDriveSpecificVehicle(CATEGORY.C);
 
         assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void vehiclesThatAreAvailableOnPeriod_ListOfVehiclesWhoAreAvalible() throws ParseException {
+        //arrange
+
+        Date beforeNotDummy = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
+        Date after = new GregorianCalendar(2014, Calendar.FEBRUARY, 15).getTime();
+        ArrayList<Transport> transports = new ArrayList<>();
+        transports.add(transport);
+        doReturn(beforeNotDummy).when(transport).getDateOfBegin();
+        doReturn(transports).when(transportCompany).getTransports();
+        doReturn(vehicle1).when(transport).getVehicle();
+        List<Vehicle> employees = new ArrayList<>();
+        employees.add(vehicle);
+        employees.add(vehicle1);
+
+        //act
+        List<Vehicle> actual = transportCompany.vehiclesThatAreAvailableOnPeriod(employees, new GregorianCalendar(2014, Calendar.FEBRUARY, 12).getTime(),
+                new GregorianCalendar(2014, Calendar.FEBRUARY, 14).getTime());
+
+        //assert
+        assertEquals(employees, actual);
+    }
+
+    @Test
+    public void getVehiclesThatMeetsRequest_EmptyList_NoVehiclesFound_TransportTypeMismatch() {
+        ArrayList<Vehicle> employees = new ArrayList<>();
+        employees.add(vehicle);
+        doReturn(TRANSPORT_TYPE.PRODUCT).when(vehicle).getTransportType();
+        doReturn(TRANSPORT_TYPE.PASSENGER).when(cargo).getCargoType();
+
+        doReturn(employees).when(transportCompany).getVehicles();
+
+        List<Employee> actual = transportCompany.employeesThatCanDriveSpecificVehicle(CATEGORY.C);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void getVehiclesThatMeetsRequest_EmptyList_NoVehiclesFound_MaximumCapacityMismatch() {
+        ArrayList<Vehicle> employees = new ArrayList<>();
+        employees.add(vehicle);
+        doReturn(TRANSPORT_TYPE.PRODUCT).when(vehicle).getTransportType();
+        doReturn(TRANSPORT_TYPE.PRODUCT).when(cargo).getCargoType();
+        doReturn(5.0).when(vehicle).getMaximumCapacity();
+        doReturn(6.0).when(cargo).getNecessaryInformation();
+
+        doReturn(employees).when(transportCompany).getVehicles();
+
+        List<Employee> actual = transportCompany.employeesThatCanDriveSpecificVehicle(CATEGORY.C);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void sortEmployee_ListOfSortedEmployees(){
+        //arrange
+        ArrayList<Employee> employees =new ArrayList<>();
+        employees.add(employee1);
+        employees.add(employee);
+        employees.add(employee2);
+        doReturn(employees).when(transportCompany).getEmployees();
+
+        doReturn(BigDecimal.TEN).when(employee).getSalary();
+        doReturn(BigDecimal.ONE).when(employee1).getSalary();
+        doReturn(BigDecimal.TEN).when(employee2).getSalary();
+
+        doReturn(CATEGORY.D).when(employee).getCategory();
+        doReturn(CATEGORY.D).when(employee1).getCategory();
+        doReturn(CATEGORY.C).when(employee2).getCategory();
+
+        List<Employee> expected = new ArrayList<>();
+        expected.add(employee);
+        expected.add(employee2);
+        expected.add(employee1);
+
+        //act
+        List<Employee> actual = transportCompany.sortEmployee();
+
+        //arrange
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void sortEmployee_EmptyList_NoEmployeesToSort(){
+        //arrange
+        ArrayList<Employee> employees =new ArrayList<>();
+        doReturn(employees).when(transportCompany).getEmployees();
+
+        List<Employee> expected = new ArrayList<>();
+
+        //act
+        List<Employee> actual = transportCompany.sortEmployee();
+
+        //arrange
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void sortTransports_ListOfSortedTransports(){
+        //arrange
+        ArrayList<Transport> transports =new ArrayList<>();
+        transports.add(transport);
+        transports.add(transport1);
+        transports.add(transport2);
+        doReturn(transports).when(transportCompany).getTransports();
+
+        doReturn(2.0).when(transport).getDestination();
+        doReturn(3.0).when(transport1).getDestination();
+        doReturn(4.0).when(transport2).getDestination();
+
+        List<Transport> expected = new ArrayList<>();
+        expected.add(transport2);
+        expected.add(transport1);
+        expected.add(transport);
+
+        //act
+        List<Transport> actual = transportCompany.sortTransports();
+
+        //arrange
+        assertEquals(expected,actual);
+    }
+    @Test
+    public void writeTransportsToFile_True_TransportAreWritten(){
+        //arrange
+        File LocationToWrite = Paths.get("src/main/resources/dummySerialisation.ser").toFile();
+
+        Map<Transport,Client> map = new HashMap<>();
+        map.put(transport,client);
+        map.put(transport1,client);
+        map.put(transport2,client);
+
+        doReturn(map).when(transportCompany).getTransportsLikeMap();
+
+        //act
+        boolean result = transportCompany.writeTransportsToFile(LocationToWrite);
+
+        //assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void writeTransportsToFile_False_TransportAreNotWritten(){
+        //arrange
+        File LocationToWrite = Paths.get("src/kartofi/resources/dummySerialisation.ser").toFile();
+
+        Map<Transport,Client> map = new HashMap<>();
+        map.put(transport,client);
+        map.put(transport1,client);
+        map.put(transport2,client);
+
+        doReturn(map).when(transportCompany).getTransportsLikeMap();
+
+        //act
+        boolean result = transportCompany.writeTransportsToFile(LocationToWrite);
+
+        //assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void readTransportsFromFile_NotEmpty_TransportsAreReadFromFile(){
+        File LocationToWrite = Paths.get("src/main/resources/dummySerialisation.ser").toFile();
+
+        Map<Transport,Client> map = new HashMap<>();
+        map.put(transport,client);
+        map.put(transport1,client);
+        map.put(transport2,client);
+
+        doReturn(map).when(transportCompany).getTransportsLikeMap();
+
+        transportCompany.writeTransportsToFile(LocationToWrite);
+
+        //act
+        Map<Transport,Client> actual = transportCompany.readTransportsFromFile(LocationToWrite);
+
+        //assert
+        assertEquals(3,actual.size());
+    }
+
+    @Test
+    public void readTransportsFromFile_Empty_TransportsAreNotReadFromFile(){
+        File LocationToWrite = Paths.get("src/main/resources/dummySerialisation.ser").toFile();
+
+        Map<Transport,Client> map = new HashMap<>();
+        map.put(transport,client);
+        map.put(transport1,client);
+        map.put(transport2,client);
+
+        doReturn(map).when(transportCompany).getTransportsLikeMap();
+
+        transportCompany.writeTransportsToFile(LocationToWrite);
+
+        LocationToWrite = Paths.get("src/notmain/resources/dummySerialisation.ser").toFile();
+        //act
+        Map<Transport,Client> actual = transportCompany.readTransportsFromFile(LocationToWrite);
+
+        //assert
+        assertEquals(0,actual.size());
+    }
+
+    @Test
+    public void readAndWriteTransportsToCompany_True_TransportsAreWritten(){
+        File LocationToWrite = Paths.get("src/main/resources/dummySerialisation.ser").toFile();
+
+        Map<Transport,Client> map = new HashMap<>();
+        map.put(transport,client);
+        map.put(transport1,client);
+        map.put(transport2,client);
+
+        doReturn(map).when(transportCompany).readTransportsFromFile(LocationToWrite);
+
+        Map<Transport,Client> mapForCompany = new HashMap<>();
+
+        doReturn(mapForCompany).when(transportCompany).getTransportsLikeMap();
+        //act
+        boolean result = transportCompany.readAndWriteTransportsToCompany(LocationToWrite);
+
+        //assert
+        assertTrue(result);
+        assertEquals(3,mapForCompany.size());
+
+    }
+
+    @Test
+    public void readAndWriteTransportsToCompany_False_TransportsAreEmpty(){
+        File LocationToWrite = Paths.get("src/main/resources/dummySerialisation.ser").toFile();
+
+        Map<Transport,Client> map = new HashMap<>();
+
+        doReturn(map).when(transportCompany).readTransportsFromFile(LocationToWrite);
+
+        Map<Transport,Client> mapForCompany = new HashMap<>();
+
+        doReturn(mapForCompany).when(transportCompany).getTransportsLikeMap();
+        //act
+        boolean result = transportCompany.readAndWriteTransportsToCompany(LocationToWrite);
+
+        //assert
+        assertFalse(result);
+        assertEquals(0,mapForCompany.size());
+    }
+
+    @Test
+    public void reportHowManyTransportsHaveBeenMade_String(){
+        //arrange
+        Date dateOnTransport = new GregorianCalendar(2012, Calendar.FEBRUARY, 11).getTime();
+
+        List<Transport> transports = new ArrayList<>();
+        transports.add(transport);
+        transports.add(transport1);
+        transports.add(transport2);
+
+        doReturn(dateOnTransport).when(transport).getDateOfEnd();
+        doReturn(dateOnTransport).when(transport1).getDateOfEnd();
+        doReturn(dateOnTransport).when(transport2).getDateOfEnd();
+
+        doReturn(transports).when(transportCompany).getTransports();
+
+        //act
+        String result = transportCompany.reportHowManyTransportsHaveBeenMade();
+
+        //assert
+        assertTrue(result.contains("3"));
+    }
+    @Test
+    public void reportSumOfMadeTransports_String(){
+        //arrange
+        Date dateOnTransport = new GregorianCalendar(2012, Calendar.FEBRUARY, 11).getTime();
+
+        List<Transport> transports = new ArrayList<>();
+        transports.add(transport);
+        transports.add(transport1);
+        transports.add(transport2);
+
+        doReturn(dateOnTransport).when(transport).getDateOfEnd();
+        doReturn(dateOnTransport).when(transport1).getDateOfEnd();
+        doReturn(dateOnTransport).when(transport2).getDateOfEnd();
+
+        doReturn(transports).when(transportCompany).getTransports();
+
+        doReturn(BigDecimal.ONE).when(transport).getPriceForTransport();
+        doReturn(BigDecimal.ONE).when(transport1).getPriceForTransport();
+        doReturn(BigDecimal.ONE).when(transport2).getPriceForTransport();
+
+        //act
+        String result = transportCompany.reportSumOfMadeTransports();
+
+        BigDecimal resolve = BigDecimal.ONE.add(BigDecimal.ONE.add(BigDecimal.ONE));
+        //assert
+        assertTrue(result.contains(resolve.toString()));
+    }
+
+    @Test
+    public void timesEmployeesDrove_String(){
+        //arrange
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(employee);
+        employees.add(employee1);
+        employees.add(employee2);
+
+        doReturn(1).when(transportCompany).timesDrove(employee);
+        doReturn(2).when(transportCompany).timesDrove(employee1);
+        doReturn(3).when(transportCompany).timesDrove(employee2);
+
+        doReturn(employees).when(transportCompany).getEmployees();
+
+        //act
+        String result = transportCompany.timesEmployeesDrove();
+
+        String val = "Employee null : 3 trips.";
+
+        //assert
+        assertTrue(result.contains(val));
+    }
+
+    @Test
+    public void earningsOnPeriod_String(){
+        //arrange
+        Date beforeOnTransport = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
+        Date afterOnTransport = new GregorianCalendar(2014, Calendar.FEBRUARY, 15).getTime();
+
+        Date begin = new GregorianCalendar(2012, Calendar.FEBRUARY, 11).getTime();
+        Date end = new GregorianCalendar(2016, Calendar.FEBRUARY, 15).getTime();
+
+        List<Transport>transports = new ArrayList<>();
+        transports.add(transport1);
+        transports.add(transport2);
+
+        doReturn(beforeOnTransport).when(transport1).getDateOfBegin();
+        doReturn(afterOnTransport).when(transport1).getDateOfEnd();
+
+        doReturn(beforeOnTransport).when(transport2).getDateOfBegin();
+        doReturn(afterOnTransport).when(transport2).getDateOfEnd();
+
+        doReturn(transports).when(transportCompany).getTransports();
+
+        doReturn(BigDecimal.ONE).when(transport1).getPriceForTransport();
+        doReturn(BigDecimal.ONE).when(transport2).getPriceForTransport();
+
+        //act
+        String result = transportCompany.earningsOnPeriod(begin,end);
+
+        BigDecimal val = BigDecimal.ONE.add(BigDecimal.ONE);
+        //arrange
+        assertTrue(result.contains(val.toString()));
+    }
+
+    @Test
+    public void earningsOnPeriodFromEmployee_String(){
+        //arrange
+        Date beforeOnTransport = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
+        Date afterOnTransport = new GregorianCalendar(2014, Calendar.FEBRUARY, 15).getTime();
+
+        Date begin = new GregorianCalendar(2012, Calendar.FEBRUARY, 11).getTime();
+        Date end = new GregorianCalendar(2016, Calendar.FEBRUARY, 15).getTime();
+
+        List<Transport>transports = new ArrayList<>();
+        transports.add(transport1);
+        transports.add(transport2);
+
+        doReturn(beforeOnTransport).when(transport1).getDateOfBegin();
+        doReturn(afterOnTransport).when(transport1).getDateOfEnd();
+
+        doReturn(beforeOnTransport).when(transport2).getDateOfBegin();
+        doReturn(afterOnTransport).when(transport2).getDateOfEnd();
+
+        doReturn(transports).when(transportCompany).getTransports();
+
+        doReturn(BigDecimal.ONE).when(transport1).getPriceForTransport();
+        doReturn(BigDecimal.TEN).when(transport2).getPriceForTransport();
+
+        doReturn(employee2).when(transport2).getDriver();
+        doReturn(employee).when(transport1).getDriver();
+
+        //act
+        String result = transportCompany.earningsOnPeriodFromEmployee(begin,end,employee);
+
+        BigDecimal val = BigDecimal.ONE;
+        //arrange
+        assertTrue(result.contains(val.toString()));
+    }
+
+    @Test
+    public void timesDrove_TimesEmployeeDroveAnTransport(){
+        //arrange
+        List<Transport>transports = new ArrayList<>();
+        transports.add(transport1);
+        transports.add(transport2);
+
+        doReturn(employee2).when(transport2).getDriver();
+        doReturn(employee).when(transport1).getDriver();
+
+        doReturn(transports).when(transportCompany).getTransports();
+
+        //act
+        int actual = transportCompany.timesDrove(employee);
+
+        //assert
+        assertEquals(1,actual);
+    }
+
+    @Test
+    public void setTransport_setsTransportList(){
+        //arrange
+        List<Transport>transports = new ArrayList<>();
+        transports.add(transport1);
+        transports.add(transport2);
+
+        doReturn(client).when(transport1).getClient();
+        doReturn(client).when(transport2).getClient();
+
+        //act
+        transportCompany.setTransports(transports);
+
+        //assert
+        assertEquals(transports.size(),transportCompany.getTransports().size());
+    }
+
+    @Test
+    public void setTransportsAsMap_setsTransports(){
+        //arrange
+        Map<Transport,Client>transports = new HashMap<>();
+        transports.put(transport,client);
+        transports.put(transport1,client);
+
+
+        //act
+        transportCompany.setTransportsAsMap(transports);
+
+        //assert
+        assertEquals(transports.size(),transportCompany.getTransports().size());
+    }
+
+    @Test
+    public void equals_true_objectsAreEqual(){
+        //arrange
+        TransportCompany company1 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        TransportCompany company2 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        //act
+        boolean result = company1.equals(company2);
+
+        //assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void equals_false_objectsAreNotEqual(){
+        //arrange
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        TransportCompany company1 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        TransportCompany company2 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clients);
+
+        //act
+        boolean result = company1.equals(company2);
+
+        //assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void hashCode_sameHash_objectsAreSame(){
+        //arrange
+        TransportCompany company1 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        TransportCompany company2 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        //act
+        int company1hash = company1.hashCode();
+        int company2hash = company2.hashCode();
+
+        //assert
+        assertEquals(company1hash,company2hash);
+    }
+
+    @Test
+    public void hashCode_differentHash_objectsAreNotSame(){
+        //arrange
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        TransportCompany company1 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        TransportCompany company2 = new TransportCompany("name",vehicles,employeeList,
+                transports,earnings,clients);
+
+        //act
+        int company1hash = company1.hashCode();
+        int company2hash = company2.hashCode();
+
+        //assert
+        assertNotSame(company1hash,company2hash);
+    }
+
+    @Test
+    public void compareTo_One_ObjectIsBigger_FirstCompare(){
+        //arrange
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        TransportCompany company1 = new TransportCompany("b",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        TransportCompany company2 = new TransportCompany("a",vehicles,employeeList,
+                transports,earnings,clients);
+
+        //act
+        int result = company1.compareTo(company2);
+
+        //assert
+        assertEquals(1,result);
+    }
+
+    @Test
+    public void compareTo_MinusOne_ObjectIsSmaller_FirstCompare(){
+        //arrange
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        TransportCompany company1 = new TransportCompany("a",vehicles,employeeList,
+                transports,earnings,clientsList);
+
+        TransportCompany company2 = new TransportCompany("b",vehicles,employeeList,
+                transports,earnings,clients);
+
+        //act
+        int result = company1.compareTo(company2);
+
+        //assert
+        assertEquals(-1,result);
+    }
+
+    @Test
+    public void compareTo_MinusOne_ObjectIsSmaller_SecondCompare(){
+        //arrange
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        TransportCompany company1 = new TransportCompany("a",vehicles,employeeList,
+                transports,BigDecimal.ONE,clientsList);
+
+        TransportCompany company2 = new TransportCompany("a",vehicles,employeeList,
+                transports,BigDecimal.TEN,clients);
+
+        //act
+        int result = company1.compareTo(company2);
+
+        //assert
+        assertEquals(-1,result);
+    }
+
+    @Test
+    public void compareTo_One_ObjectIsBigger_SecondCompare(){
+        //arrange
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        TransportCompany company1 = new TransportCompany("a",vehicles,employeeList,
+                transports,BigDecimal.TEN,clientsList);
+
+        TransportCompany company2 = new TransportCompany("a",vehicles,employeeList,
+                transports,BigDecimal.ONE,clients);
+
+        //act
+        int result = company1.compareTo(company2);
+
+        //assert
+        assertEquals(1,result);
+    }
+
+    @Test
+    public void compareTo_One_ObjectAreEqual(){
+        //arrange
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        TransportCompany company1 = new TransportCompany("a",vehicles,employeeList,
+                transports,BigDecimal.ONE,clientsList);
+
+        TransportCompany company2 = new TransportCompany("a",vehicles,employeeList,
+                transports,BigDecimal.ONE,clients);
+
+        //act
+        int result = company1.compareTo(company2);
+
+        //assert
+        assertEquals(0,result);
+    }
+
+    @Test
+    public void toString_OutputAtLeastCompanyName() {
+        //arrange & act
+        String toString = transportCompany.toString();
+
+        assertTrue(toString.contains("companyName=" + transportCompany.getCompanyName()));
+    }
+
+    @Test
+    public void testBuilder(){
+        //arrange
+        String companyName = "name";
+
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        vehicles.add(vehicle);
+
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(employee2);
+
+        Map<Transport,Client> map = new HashMap<>();
+        map.put(transport,client);
+
+        BigDecimal earnings = BigDecimal.ONE;
+
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+
+        //act
+        TransportCompany transportCompany1 = new TransportCompany
+                .TransportCompanyBuilder()
+                .withCompanyName(companyName)
+                .withVehicles(vehicles)
+                .withClients(clients)
+                .withEmployees(employees)
+                .withTransports(map)
+                .withEarnings(earnings)
+                .build();
+
+        //assert
+        assertEquals(companyName,transportCompany1.getCompanyName());
+        assertEquals(1,transportCompany1.getTransports().size());
+        assertEquals(1,transportCompany1.getVehicles().size());
+        assertEquals(1,transportCompany1.getEmployees().size());
+        assertEquals(1,transportCompany1.getTransportsLikeMap().size());
+        assertEquals(BigDecimal.ONE,transportCompany1.getEarnings());
+        assertEquals(1,transportCompany1.getClients().size());
+
     }
 }

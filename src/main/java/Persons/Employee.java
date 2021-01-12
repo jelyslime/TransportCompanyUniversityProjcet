@@ -2,6 +2,7 @@ package Persons;
 
 import utility.CATEGORY;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ import java.util.Objects;
  *
  * @author Vladislav Zlatanov
  */
-public class Employee extends Person {
+public class Employee extends Person implements Serializable {
     private BigDecimal salary;
     private CATEGORY category;
 
