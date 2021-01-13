@@ -26,6 +26,7 @@ public class MaterialArgs implements CargoArgsFor<MaterialCargo> {
 
     /**
      * Auto-generated setter
+     *
      * @param weight weight of the cargo
      * @throws IllegalArgumentException when argument is null.
      */

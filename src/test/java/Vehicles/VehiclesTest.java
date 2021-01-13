@@ -106,16 +106,16 @@ public class VehiclesTest {
     }
 
     @Test
-    public void setPricePerKm_SetsPricePerKm(){
+    public void setPricePerKm_SetsPricePerKm() {
         //arrange & act
         vehicle.setPricePerKm(BigDecimal.TEN);
 
         //assert
-        assertEquals(BigDecimal.TEN,vehicle.getPricePerKm());
+        assertEquals(BigDecimal.TEN, vehicle.getPricePerKm());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setPricePerKm_ThrowsIllegalArgument_ArgumentIsNull(){
+    public void setPricePerKm_ThrowsIllegalArgument_ArgumentIsNull() {
         //arrange & act
         vehicle.setPricePerKm(null);
     }

@@ -49,7 +49,7 @@ public class PeoplesCargo extends Cargo {
      * <p>
      * Using factory is recommended.
      *
-     * @param type type of the transport
+     * @param type    type of the transport
      * @param persons persons to be added
      */
     public PeoplesCargo(TRANSPORT_TYPE type, List<Person> persons) {
@@ -69,6 +69,7 @@ public class PeoplesCargo extends Cargo {
 
     /**
      * Auto generated setter.
+     *
      * @param persons persons to be transported.
      * @throws IllegalArgumentException when argument is null.
      */
@@ -84,6 +85,7 @@ public class PeoplesCargo extends Cargo {
 
     /**
      * Method gets the number of people that have to be transported.
+     *
      * @return number of people.
      */
     protected int getNumberOfPeoples() {

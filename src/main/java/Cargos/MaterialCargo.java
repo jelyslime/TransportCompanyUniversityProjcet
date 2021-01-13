@@ -39,7 +39,7 @@ public class MaterialCargo extends Cargo {
      * <p>
      * Using factory is recommended.
      *
-     * @param type type of the transport.
+     * @param type        type of the transport.
      * @param cargoWeight weight of the cargo.
      */
     protected MaterialCargo(TRANSPORT_TYPE type, double cargoWeight) {
@@ -49,6 +49,7 @@ public class MaterialCargo extends Cargo {
 
     /**
      * Auto-generated getter.
+     *
      * @return weight of cargo.
      */
     public double getCargoWeight() {
@@ -57,8 +58,9 @@ public class MaterialCargo extends Cargo {
 
     /**
      * Auto-generated setter
+     *
      * @param cargoWeight weight of the cargo to be set.
-     *                    @throws IllegalArgumentException when argument is null.
+     * @throws IllegalArgumentException when argument is null.
      */
     public void setCargoWeight(double cargoWeight) {
         if (cargoWeight < 0) {

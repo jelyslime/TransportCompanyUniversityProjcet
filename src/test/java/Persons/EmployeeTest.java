@@ -1,6 +1,5 @@
 package Persons;
 
-import Persons.Factory.ClientArgs;
 import Persons.Factory.EmployeeArgs;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -140,7 +139,7 @@ public class EmployeeTest {
     }
 
     @Test
-    public void EmployeeArgsNoArgsConstructor_CreateInstance(){
+    public void EmployeeArgsNoArgsConstructor_CreateInstance() {
         EmployeeArgs args = new EmployeeArgs();
 
         //assert

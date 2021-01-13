@@ -101,7 +101,7 @@ public class PeoplesCargoTest {
     }
 
     @Test
-    public void equals_True_ObjectsAreEqual(){
+    public void equals_True_ObjectsAreEqual() {
         //arrange
         PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
         PeoplesCargo cargo1 = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
@@ -114,7 +114,7 @@ public class PeoplesCargoTest {
     }
 
     @Test
-    public void equals_False_ObjectsAreNotEqual(){
+    public void equals_False_ObjectsAreNotEqual() {
         //arrange
         PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
         PeoplesCargo cargo1 = new PeoplesCargo(TRANSPORT_TYPE.PRODUCT, EXPECTED_LIST);
@@ -127,22 +127,22 @@ public class PeoplesCargoTest {
     }
 
     @Test
-    public void hashCode_SameHash_EqualObjects(){
+    public void hashCode_SameHash_EqualObjects() {
         //arrange
         PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
         PeoplesCargo cargo1 = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
 
         //assert
-        assertEquals(cargo.hashCode(),cargo1.hashCode());
+        assertEquals(cargo.hashCode(), cargo1.hashCode());
     }
 
     @Test
-    public void hashCode_DifferentHash_DifferentObjects(){
+    public void hashCode_DifferentHash_DifferentObjects() {
         //arrange
         PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
         PeoplesCargo cargo1 = new PeoplesCargo(TRANSPORT_TYPE.PRODUCT, EXPECTED_LIST);
 
         //assert
-        assertNotSame(cargo.hashCode(),cargo1.hashCode());
+        assertNotSame(cargo.hashCode(), cargo1.hashCode());
     }
 }

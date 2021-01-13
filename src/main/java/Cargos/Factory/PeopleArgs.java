@@ -21,7 +21,7 @@ public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
     public PeopleArgs(ArrayList<Person> personArrayList) {
         if (Objects.isNull(personArrayList)) {
             this.personArrayList = new ArrayList<>();
-        }else {
+        } else {
             this.personArrayList = personArrayList
                     .stream()
                     .filter(Objects::nonNull)
@@ -39,6 +39,7 @@ public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
 
     /**
      * Auto-generated setter
+     *
      * @param list list of persons that have to be transported.
      * @throws IllegalArgumentException when argument is null.
      */

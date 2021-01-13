@@ -19,6 +19,7 @@ public abstract class Cargo implements CargoNecessaryInformation {
 
     /**
      * Protected all-args constructor
+     *
      * @param type type of the transport.
      */
     protected Cargo(TRANSPORT_TYPE type) {
@@ -28,6 +29,7 @@ public abstract class Cargo implements CargoNecessaryInformation {
 
     /**
      * Auto-generated getter
+     *
      * @return type of the transport
      */
     public TRANSPORT_TYPE getType() {

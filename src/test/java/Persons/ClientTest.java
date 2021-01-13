@@ -147,7 +147,7 @@ public class ClientTest {
     }
 
     @Test
-    public void ClientArgsNoArgsConstructor_CreateInstance(){
+    public void ClientArgsNoArgsConstructor_CreateInstance() {
         ClientArgs args = new ClientArgs();
 
         //assert
