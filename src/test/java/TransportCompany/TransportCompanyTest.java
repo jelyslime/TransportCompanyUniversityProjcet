@@ -29,60 +29,41 @@ public class TransportCompanyTest {
 
     @Mock
     Cargo cargo;
-
-    @Mock
-    private List<Vehicle> vehicles;
-
-    @Mock
-    private List<Employee> employeeList;
-
-    @Mock
-    private Map<Transport, Client> transports;
-
-    @Mock
-    private BigDecimal earnings;
-
-    @Mock
-    private List<Client> clientsList;
-
     CATEGORY category;
-
     @Mock
     Vehicle vehicle;
-
     @Mock
     Employee employee;
-
     @Mock
     Client client;
-
     @Mock
     Employee employee1;
-
     @Mock
     Employee employee2;
-
     @Mock
     Client client1;
-
     @Mock
     Transport transport;
-
     @Mock
     Transport transport1;
-
     @Mock
     Transport transport2;
-
     @Mock
     Date begin;
     @Mock
     Date end;
-
     @Mock
     Vehicle vehicle1;
-
-
+    @Mock
+    private List<Vehicle> vehicles;
+    @Mock
+    private List<Employee> employeeList;
+    @Mock
+    private Map<Transport, Client> transports;
+    @Mock
+    private BigDecimal earnings;
+    @Mock
+    private List<Client> clientsList;
     @Spy
     @InjectMocks
     private TransportCompany transportCompany;
@@ -104,7 +85,7 @@ public class TransportCompanyTest {
 
 
         //assert
-        assertTrue(Objects.nonNull(company));
+        assertNotNull(company);
     }
 
     @Test
@@ -113,7 +94,7 @@ public class TransportCompanyTest {
         TransportCompany company1 = new TransportCompany();
 
         //assert
-        assertTrue(Objects.nonNull(company1));
+        assertNotNull(company1);
     }
 
     @Test

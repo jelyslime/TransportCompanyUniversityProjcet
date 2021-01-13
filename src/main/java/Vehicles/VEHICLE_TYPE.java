@@ -1,7 +1,7 @@
 package Vehicles;
 
 /**
- * Diffrent type of vehicles.
+ * Different type of vehicles.
  */
 
 public enum VEHICLE_TYPE {

@@ -21,11 +21,10 @@ import static junit.framework.TestCase.assertTrue;
 @RunWith(JUnit4.class)
 public class ClientTest {
 
+    private final String EXPECTED_NAME = "NAME";
+    private final BigDecimal EXPECTED_BIG_DECIMAL = new BigDecimal("3.23");
     @Mock
     private Cargo cargo;
-
-    private String EXPECTED_NAME = "NAME";
-    private BigDecimal EXPECTED_BIG_DECIMAL = new BigDecimal("3.23");
 
     /**
      * This test checks if all argument constructor works as expected.
@@ -114,7 +113,7 @@ public class ClientTest {
         Client client2 = new Client();
 
         //act & assert
-        assertTrue(client.equals(client2));
+        assertEquals(client, client2);
     }
 
     /**
@@ -127,7 +126,7 @@ public class ClientTest {
         Client client2 = new Client();
 
         //act & assert
-        assertTrue(client.hashCode() == client2.hashCode());
+        assertEquals(client.hashCode(), client2.hashCode());
     }
 
     /**

@@ -37,7 +37,7 @@ public class GenericFeeCalculator implements FeeCalculator {
         BigDecimal costToBeReturned = BigDecimal.valueOf(necessaryInformation.getNecessaryInformation());
         return costToBeReturned
                 .multiply(costByCategory)
-                .divide(new BigDecimal(2.0));
+                .divide(BigDecimal.valueOf(2.0));
     }
 
     /**

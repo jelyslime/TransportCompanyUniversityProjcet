@@ -7,58 +7,46 @@ import Persons.Client;
 import Persons.Employee;
 import Persons.Factory.ClientArgs;
 import Persons.Factory.EmployeeArgs;
-
 import Persons.PersonFactory;
-
 import Vehicles.Vehicle;
-import org.junit.*;
-import org.mockito.Mock;
-
-import org.mockito.junit.MockitoJUnitRunner;
-
-import utility.FeeCalculation.GenericFeeCalculator;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 import utility.CATEGORY;
+import utility.FeeCalculation.GenericFeeCalculator;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import org.mockito.*;
+
 import static junit.framework.TestCase.*;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransportTest {
-    @Spy
-    private  Transport transport;
-
-    @Mock
-    private  Date dateOfBegin;
-
-    @Mock
-    private  Date dateOfEnd;
-
     private final double destination = 0.0;
-
+    private final boolean isPayed = false;
+    @Spy
+    private Transport transport;
+    @Mock
+    private Date dateOfBegin;
+    @Mock
+    private Date dateOfEnd;
     @Mock
     private Cargo cargo2;
+    @Mock
+    private Client client;
+    private Cargo cargo;
+    @Mock
+    private BigDecimal priceForTransport;
 
     @Mock
-    private  Client client;
-
-    private  Cargo cargo;
-
-    private final boolean isPayed = false;
+    private Employee employee;
 
     @Mock
-    private  BigDecimal priceForTransport;
-
-    @Mock
-    private  Employee employee;
-
-    @Mock
-    private  Vehicle vehicle;
+    private Vehicle vehicle;
 
     @Mock
     private Vehicle vehicle1;
@@ -68,7 +56,7 @@ public class TransportTest {
         cargo = CargoFactory.getInstance().createCargo(new MaterialArgs(500));
         doReturn(cargo).when(client).getCargo();
         //doReturn(priceForTransport).when(genericFeeCalculator).calculateFee(cargo);
-       //doReturn(priceForTransport).when(transport).calculateTransportPrice();
+        //doReturn(priceForTransport).when(transport).calculateTransportPrice();
         transport = new Transport
                 .TransportBuilder()
                 .withDateOfBegin(dateOfBegin)
@@ -87,12 +75,11 @@ public class TransportTest {
      * If it does, builder works as expected.
      *
      * @see Transport.TransportBuilder
-     *
      */
     @Test
     public void build_WithoutCargoAndPrice_BuilderWorks() {
         //arrange & act
-        Transport transport1 = new Transport(dateOfBegin,dateOfEnd,destination,client,isPayed,employee,vehicle);
+        Transport transport1 = new Transport(dateOfBegin, dateOfEnd, destination, client, isPayed, employee, vehicle);
 
         //assert
         assertEquals(transport1, transport);
@@ -103,12 +90,11 @@ public class TransportTest {
      * If it does, builder works as expected.
      *
      * @see Transport.TransportBuilder
-     *
      */
     @Test
     public void build_allParameters_BuilderWorks() {
         //arrange
-        Transport transport1 = new Transport(dateOfBegin,dateOfEnd,destination,client,isPayed,employee,vehicle);
+        Transport transport1 = new Transport(dateOfBegin, dateOfEnd, destination, client, isPayed, employee, vehicle);
 
         //act
         transport = new Transport
@@ -134,7 +120,7 @@ public class TransportTest {
      * This test checks if setDateOfBegin works as expected.
      */
     @Test
-    public void setDateOfBegin_ModifyDateOfBeginProp_ArgumentsAreValid(){
+    public void setDateOfBegin_ModifyDateOfBeginProp_ArgumentsAreValid() {
         //arrange
         Date date = new Date();
 
@@ -142,14 +128,14 @@ public class TransportTest {
         transport.setDateOfBegin(date);
 
         //assert
-        assertEquals(date,transport.getDateOfBegin());
+        assertEquals(date, transport.getDateOfBegin());
     }
 
     /**
      * This test checks if setDateOfEnd works as expected.
      */
     @Test
-    public void setDateOfEnd_ModifyDateOfBeginProp_ArgumentsAreValid(){
+    public void setDateOfEnd_ModifyDateOfBeginProp_ArgumentsAreValid() {
         //arrange
         Date date = new Date();
 
@@ -157,46 +143,46 @@ public class TransportTest {
         transport.setDateOfEnd(date);
 
         //assert
-        assertEquals(date,transport.getDateOfEnd());
+        assertEquals(date, transport.getDateOfEnd());
     }
 
     /**
      * This test checks if setClient works as expected.
      */
     @Test
-    public void setClient_ModifyClientProp_ArgumentsAreValid(){
+    public void setClient_ModifyClientProp_ArgumentsAreValid() {
         //arrange
-        Client client = PersonFactory.getInstance().createPerson(new ClientArgs("name" , priceForTransport,cargo));
+        Client client = PersonFactory.getInstance().createPerson(new ClientArgs("name", priceForTransport, cargo));
 
 
         //act
         transport.setClient(client);
 
         //assert
-        assertEquals(client,transport.getClient());
+        assertEquals(client, transport.getClient());
     }
 
     /**
      * This test checks if setDriver works as expected.
      */
     @Test
-    public void setDriver_ModifyDriverProp_ArgumentsAreValid(){
+    public void setDriver_ModifyDriverProp_ArgumentsAreValid() {
         //arrange
-        Employee employee = PersonFactory.getInstance().createPerson(new EmployeeArgs("name",priceForTransport,CATEGORY.C));
+        Employee employee = PersonFactory.getInstance().createPerson(new EmployeeArgs("name", priceForTransport, CATEGORY.C));
 
 
         //act
         transport.setDriver(employee);
 
         //assert
-        assertEquals(employee,transport.getDriver());
+        assertEquals(employee, transport.getDriver());
     }
 
     /**
      * This test checks if setDestination works as expected.
      */
     @Test
-    public void setDestination_ModifyDestinationProp_ArgumentsAreValid(){
+    public void setDestination_ModifyDestinationProp_ArgumentsAreValid() {
         //arrange
         double expected = 5.32;
 
@@ -205,19 +191,19 @@ public class TransportTest {
         transport.setDestination(expected);
 
         //assert
-        assertEquals(expected,transport.getDestination());
+        assertEquals(expected, transport.getDestination());
     }
 
     /**
      * This test checks if setCargoToBeTransported works as expected.
      */
     @Test
-    public void setCargoToBeTransported_ModifyCargoProp_ArgumentsAreValid(){
+    public void setCargoToBeTransported_ModifyCargoProp_ArgumentsAreValid() {
         //arrange & act
         transport.setCargoToBeTransported(cargo2);
 
         //assert
-        assertEquals(cargo2,transport.getCargoToBeTransported());
+        assertEquals(cargo2, transport.getCargoToBeTransported());
     }
 
 
@@ -225,7 +211,7 @@ public class TransportTest {
      * This test checks if setPayed works as expected.
      */
     @Test
-    public void setPayed_ModifyIsPayedProp_ArgumentsAreValid(){
+    public void setPayed_ModifyIsPayedProp_ArgumentsAreValid() {
         //arrange & act
         transport.setPayed(true);
 
@@ -237,33 +223,33 @@ public class TransportTest {
      * This test checks if setPayed works as expected.
      */
     @Test
-    public void setVehicle_ModifyVehicleProp_ArgumentsAreValid(){
+    public void setVehicle_ModifyVehicleProp_ArgumentsAreValid() {
         //arrange & act
         transport.setVehicle(vehicle1);
 
         //assert
-        assertEquals(vehicle1,transport.getVehicle());
+        assertEquals(vehicle1, transport.getVehicle());
     }
 
     /**
      * This test checks if setPriceForTransport works as expected.
      */
     @Test
-    public void setPriceForTransport_ModifyPriceForTransportProp_ArgumentsAreValid(){
+    public void setPriceForTransport_ModifyPriceForTransportProp_ArgumentsAreValid() {
         //arrange & act
         transport.setPriceForTransport(new BigDecimal("3.2"));
 
         //assert
-        assertEquals(new BigDecimal("3.2"),transport.getPriceForTransport());
+        assertEquals(new BigDecimal("3.2"), transport.getPriceForTransport());
     }
 
     /**
      * This test checks if hashCode works as expected.
      */
     @Test
-    public void hashCode_SameHash_ObjectAreSame(){
+    public void hashCode_SameHash_ObjectAreSame() {
         //arrange
-        Transport transport1 = new Transport(dateOfBegin,dateOfEnd,destination,client,isPayed,employee,vehicle);
+        Transport transport1 = new Transport(dateOfBegin, dateOfEnd, destination, client, isPayed, employee, vehicle);
 
         //assert & act
         assertEquals(transport.hashCode(), transport1.hashCode());
@@ -273,9 +259,9 @@ public class TransportTest {
      * This test checks if hashCode works as expected.
      */
     @Test
-    public void hashCode_differentHash_ObjectAreDifferent(){
+    public void hashCode_differentHash_ObjectAreDifferent() {
         //arrange
-        Transport transport1 = new Transport(dateOfBegin,dateOfEnd,destination,client,isPayed,employee,vehicle1);
+        Transport transport1 = new Transport(dateOfBegin, dateOfEnd, destination, client, isPayed, employee, vehicle1);
 
         //assert & act
         assertFalse(transport.hashCode() == transport1.hashCode());

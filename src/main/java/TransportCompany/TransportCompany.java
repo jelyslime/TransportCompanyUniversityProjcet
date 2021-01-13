@@ -280,7 +280,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
         for (Map.Entry<Transport, Client> entry : entries) {
             if (entry.getValue().equals(client)) {
-                if (entry.getKey().isPayed() == false) {
+                if (!entry.getKey().isPayed()) {
                     return true;
                 }
             }
@@ -332,17 +332,16 @@ public class TransportCompany implements Comparable<TransportCompany> {
     protected Transport createNewTransport(Employee driver, Vehicle vehicle,
                                            Client client, double distance, Cargo cargo,
                                            Date begin, Date end) {
-        Transport transport = new Transport.TransportBuilder()
+
+        return new Transport.TransportBuilder()
                 .withDriver(driver)
                 .withVehicle(vehicle)
                 .withClient(client)
                 .withDestination(distance)
-                .withCargo(client.getCargo())
+                .withCargo(cargo)
                 .withDateOfBegin(begin)
                 .withDateOfEnd(end)
                 .build();
-
-        return transport;
 
     }
 
@@ -466,7 +465,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
 
         vehicles.removeAll(availableVehiclesInSystem); //removes all vehicles found in transports
         availableVehiclesInSystem.addAll(vehicles); //then add all vehicles who are in list to the result one
-        //this is done because in vehicles are all vehicles who meet the criteria for an concreate
+        //this is done because in vehicles are all vehicles who meet the criteria for an concrete
         //transport. Thus, there may be vehicles who meet the criteria but were never used for transports by far.
         //for this reason all matches are removed and then only the unique which are never used for
         //transports are added back to the list.
@@ -481,14 +480,11 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return List of all vehicles who match the criteria.
      */
     protected List<Vehicle> getVehiclesThatMeetsRequest(CargoNecessaryInformation cargo) {
-        List<Vehicle> vehiclesThatMeetRequest = this.getVehicles()
+        return this.getVehicles()
                 .stream()
                 .filter(vehicle -> vehicle.getTransportType().equals(cargo.getCargoType()))
                 .filter(vehicle -> vehicle.getMaximumCapacity() >= cargo.getNecessaryInformation())
                 .collect(Collectors.toList());
-
-
-        return vehiclesThatMeetRequest;
     }
 
     /**
@@ -497,11 +493,10 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return Sorted list of {@link Employee}s
      */
     public List<Employee> sortEmployee() {
-        List<Employee> employees = getEmployees()
+        return getEmployees()
                 .stream()
                 .sorted(Comparator.comparing(Employee::getSalary).thenComparing(Employee::getCategory).reversed())
                 .collect(Collectors.toList());
-        return employees;
     }
 
     /**
@@ -510,12 +505,11 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return Sorted list of {@link Transport}s
      */
     public List<Transport> sortTransports() {
-        List<Transport> transports = getTransports()
+
+        return getTransports()
                 .stream()
                 .sorted(Comparator.comparing(Transport::getDestination).reversed())
                 .collect(Collectors.toList());
-
-        return transports;
     }
 
     /**
@@ -532,7 +526,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
             return true;
         } catch (IOException e) {
             //log error
-            System.out.println(e);
+            System.out.println("IO exception have occurred, cause: " + e.getCause());
         }
         return false;
     }
@@ -774,12 +768,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
      * @return transports.
      */
     public List<Transport> getTransports() {
-        List<Transport> transports = getTransportsLikeMap().entrySet()
-                .stream()
-                .map(transportClientEntry -> transportClientEntry.getKey())
-                .collect(Collectors.toList());
-
-        return transports;
+        return new ArrayList<>(getTransportsLikeMap().keySet());
     }
 
     /**

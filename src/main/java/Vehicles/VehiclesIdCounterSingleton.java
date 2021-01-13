@@ -8,18 +8,18 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Class purpose is to simulate automatic id generation via an atomic integer
  * </p>
  */
-public class VechiclesIdCounterSingleton {
-    private static VechiclesIdCounterSingleton singleton = null;
+public class VehiclesIdCounterSingleton {
+    private static VehiclesIdCounterSingleton singleton = null;
 
     public final AtomicInteger counter;
 
-    private VechiclesIdCounterSingleton() {
+    private VehiclesIdCounterSingleton() {
         counter = new AtomicInteger();
     }
 
-    public static VechiclesIdCounterSingleton getInstance() {
+    public static VehiclesIdCounterSingleton getInstance() {
         if (singleton == null) {
-            singleton = new VechiclesIdCounterSingleton();
+            singleton = new VehiclesIdCounterSingleton();
         }
         return singleton;
     }

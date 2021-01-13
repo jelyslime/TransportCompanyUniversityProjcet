@@ -18,9 +18,9 @@ import static junit.framework.TestCase.assertTrue;
 @RunWith(JUnit4.class)
 public class EmployeeTest {
 
-    private String EXPECTED_NAME = "NAME";
-    private BigDecimal EXPECTED_SALARY = new BigDecimal("123.32");
-    private CATEGORY EXPECTED_CATEGORY = CATEGORY.B;
+    private final String EXPECTED_NAME = "NAME";
+    private final BigDecimal EXPECTED_SALARY = new BigDecimal("123.32");
+    private final CATEGORY EXPECTED_CATEGORY = CATEGORY.B;
 
     /**
      * This test checks if all argument constructor works as expected.
@@ -105,7 +105,7 @@ public class EmployeeTest {
         Employee employee2 = new Employee();
 
         //act & assert
-        assertTrue(employee.equals(employee2));
+        assertEquals(employee, employee2);
     }
 
     /**
@@ -118,7 +118,7 @@ public class EmployeeTest {
         Employee employee2 = new Employee();
 
         //act & assert
-        assertTrue(employee.hashCode() == employee2.hashCode());
+        assertEquals(employee.hashCode(), employee2.hashCode());
     }
 
     /**

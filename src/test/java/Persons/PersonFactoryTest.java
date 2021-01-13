@@ -12,7 +12,7 @@ import utility.CATEGORY;
 import java.math.BigDecimal;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.assertNotNull;
 
 /**
  * Unit tests for PersonFactory
@@ -31,7 +31,6 @@ public class PersonFactoryTest {
     @Mock
     private CATEGORY category;
 
-    private ClientArgs clientArgs;
     private EmployeeArgs employeeArgs;
 
     /**
@@ -52,13 +51,13 @@ public class PersonFactoryTest {
     @Test
     public void createPerson_Client_ClientArgs() {
         //arrange
-        clientArgs = new ClientArgs("", bigDecimal, cargo);
+        ClientArgs clientArgs = new ClientArgs("", bigDecimal, cargo);
 
         //act
         Client client = PersonFactory.getInstance().createPerson(clientArgs);
 
         //assert
-        assertTrue(client instanceof Client);
+        assertNotNull(client);
     }
 
     /**
@@ -76,7 +75,7 @@ public class PersonFactoryTest {
         Employee employee = PersonFactory.getInstance().createPerson(employeeArgs);
 
         //assert
-        assertTrue(employee instanceof Employee);
+        assertNotNull(employee);
     }
 
     /**

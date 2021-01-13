@@ -463,7 +463,7 @@ public class Transport implements java.io.Serializable {
          */
         public TransportBuilder withVehicle(Vehicle vehicle) {
             if (Objects.isNull(vehicle)) {
-                this.vehicle = new Vehicle.VechicleBuilder().build();
+                this.vehicle = new Vehicle.VehiclesBuilder().build();
                 return this;
             }
             this.vehicle = vehicle;
@@ -512,7 +512,7 @@ public class Transport implements java.io.Serializable {
                 dateOfEnd = new Date();
             }
             if (Objects.isNull(vehicle)) {
-                vehicle = new Vehicle.VechicleBuilder().build();
+                vehicle = new Vehicle.VehiclesBuilder().build();
             }
             if (Objects.isNull(driver)) {
                 driver = PersonFactory.getInstance().createPerson(new EmployeeArgs());

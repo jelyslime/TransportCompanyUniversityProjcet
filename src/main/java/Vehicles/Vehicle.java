@@ -15,14 +15,14 @@ import java.util.Objects;
  * </p>
  *
  * <p>
- * Class adopts builder design pattern with VechicleBuilder inner class.
+ * Class adopts builder design pattern with VehiclesBuilder inner class.
  *
  * </p>
  *
- * @see VechicleBuilder
+ * @see VehiclesBuilder
  */
 public class Vehicle implements Serializable {
-    final int vehicleId = VechiclesIdCounterSingleton.getInstance()
+    final int vehicleId = VehiclesIdCounterSingleton.getInstance()
             .counter.incrementAndGet(); //auto generated id
     private CATEGORY categoryRequired; //Category required for the vehicle to be driven.
     private BigDecimal pricePerKm; //price per kilometer for driving vehicle.
@@ -31,7 +31,7 @@ public class Vehicle implements Serializable {
     private double maximumCapacity; //maximum load capacity.
 
     /**
-     * Private no-args constructor for the use of {@link VechicleBuilder}
+     * Private no-args constructor for the use of {@link VehiclesBuilder}
      */
     private Vehicle() {
 
@@ -44,7 +44,7 @@ public class Vehicle implements Serializable {
      * because it makes code unreadable and there are no
      * null checks for given arguments.</P>
      *
-     * <p>For creating instances of {@link Vehicle} use {@link VechicleBuilder}.</p>
+     * <p>For creating instances of {@link Vehicle} use {@link VehiclesBuilder}.</p>
      *
      * @param categoryRequired Category required for the vehicle to be driven.
      * @param pricePerKm       price per kilometer for driving vehicle.
@@ -77,7 +77,7 @@ public class Vehicle implements Serializable {
     }
 
     /**
-     * @return vechicle type of current object
+     * @return vehicle type of current object
      * @see VEHICLE_TYPE
      */
     public VEHICLE_TYPE getVehicleType() {
@@ -191,7 +191,7 @@ public class Vehicle implements Serializable {
      *
      * @see Vehicle
      */
-    public static class VechicleBuilder {
+    public static class VehiclesBuilder {
         private CATEGORY categoryRequired;
         private BigDecimal pricePerKm;
         private TRANSPORT_TYPE transportType;
@@ -205,7 +205,7 @@ public class Vehicle implements Serializable {
          * @return this
          * @see CATEGORY
          */
-        public VechicleBuilder withCategory(CATEGORY category) {
+        public VehiclesBuilder withCategory(CATEGORY category) {
             if (Objects.isNull(category)) {
                 this.categoryRequired = CATEGORY.B;
                 return this;
@@ -221,7 +221,7 @@ public class Vehicle implements Serializable {
          * @return this
          * @see TRANSPORT_TYPE
          */
-        public VechicleBuilder transportType(TRANSPORT_TYPE transportType) {
+        public VehiclesBuilder transportType(TRANSPORT_TYPE transportType) {
             if (Objects.isNull(transportType)) {
                 this.transportType = TRANSPORT_TYPE.PASSENGER;
                 return this;
@@ -237,7 +237,7 @@ public class Vehicle implements Serializable {
          * @return this
          * @see VEHICLE_TYPE
          */
-        public VechicleBuilder vechicleType(VEHICLE_TYPE vehicleType) {
+        public VehiclesBuilder vehiclesType(VEHICLE_TYPE vehicleType) {
             if (Objects.isNull(vehicleType)) {
                 this.vehicleType = VEHICLE_TYPE.BANICHARKA;
                 return this;
@@ -252,7 +252,7 @@ public class Vehicle implements Serializable {
          * @param capacity Capacity of current vehicle.
          * @return this
          */
-        public VechicleBuilder withMaximumCapacity(double capacity) {
+        public VehiclesBuilder withMaximumCapacity(double capacity) {
             this.maximumCapacity = capacity;
             return this;
         }
@@ -264,7 +264,7 @@ public class Vehicle implements Serializable {
          * @return this
          * @see BigDecimal
          */
-        public VechicleBuilder withPricePerKm(BigDecimal price) {
+        public VehiclesBuilder withPricePerKm(BigDecimal price) {
             if (Objects.isNull(price)) {
                 this.pricePerKm = BigDecimal.ZERO;
                 return this;
