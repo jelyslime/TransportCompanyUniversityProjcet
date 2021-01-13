@@ -23,23 +23,23 @@ import java.util.*;
 
 public class SimpleDemo {
 
-    public static List<Employee> createEmployees(){
+    public static List<Employee> createEmployees() {
         List<Employee> firstRowOFEmployees = new ArrayList<>();
-        for (int i = 0; i < 3;i++){
+        for (int i = 0; i < 3; i++) {
             EmployeeArgs employeeArgs = new EmployeeArgs("employee" + i, BigDecimal.TEN.add(BigDecimal.valueOf(i)), CATEGORY.B);
             Employee employee = PersonFactory.getInstance().createPerson(employeeArgs);
             firstRowOFEmployees.add(employee);
         }
 
         List<Employee> SecondRowOFEmployees = new ArrayList<>();
-        for (int i = 3; i < 6;i++){
+        for (int i = 3; i < 6; i++) {
             EmployeeArgs employeeArgs = new EmployeeArgs("employee" + i, BigDecimal.TEN.add(BigDecimal.valueOf(i)), CATEGORY.C);
             Employee employee = PersonFactory.getInstance().createPerson(employeeArgs);
             SecondRowOFEmployees.add(employee);
         }
 
         List<Employee> ThirdRowOFEmployees = new ArrayList<>();
-        for (int i = 6; i < 9;i++){
+        for (int i = 6; i < 9; i++) {
             EmployeeArgs employeeArgs = new EmployeeArgs("employee" + i, BigDecimal.TEN.add(BigDecimal.valueOf(i)), CATEGORY.D);
             Employee employee = PersonFactory.getInstance().createPerson(employeeArgs);
             ThirdRowOFEmployees.add(employee);
@@ -52,9 +52,9 @@ public class SimpleDemo {
         return result;
     }
 
-    public static List<Vehicle> createVehicles(){
+    public static List<Vehicle> createVehicles() {
         List<Vehicle> first = new ArrayList<>();
-        for (int i = 0; i < 3;i++){
+        for (int i = 0; i < 3; i++) {
             Vehicle vehicle = new Vehicle.VehiclesBuilder()
                     .transportType(TRANSPORT_TYPE.PRODUCT)
                     .withMaximumCapacity(2000)
@@ -64,7 +64,7 @@ public class SimpleDemo {
                     .build();
             first.add(vehicle);
         }
-        for (int i = 0; i < 3;i++){
+        for (int i = 0; i < 3; i++) {
             Vehicle vehicle = new Vehicle.VehiclesBuilder()
                     .transportType(TRANSPORT_TYPE.PRODUCT)
                     .withMaximumCapacity(5000)
@@ -74,7 +74,7 @@ public class SimpleDemo {
                     .build();
             first.add(vehicle);
         }
-        for (int i = 0; i < 3;i++){
+        for (int i = 0; i < 3; i++) {
             Vehicle vehicle = new Vehicle.VehiclesBuilder()
                     .transportType(TRANSPORT_TYPE.PASSENGER)
                     .withMaximumCapacity(25)
@@ -84,7 +84,7 @@ public class SimpleDemo {
                     .build();
             first.add(vehicle);
         }
-        for (int i = 0; i < 3;i++){
+        for (int i = 0; i < 3; i++) {
             Vehicle vehicle = new Vehicle.VehiclesBuilder()
                     .transportType(TRANSPORT_TYPE.PASSENGER)
                     .withMaximumCapacity(4)
@@ -94,7 +94,7 @@ public class SimpleDemo {
                     .build();
             first.add(vehicle);
         }
-        for (int i = 0; i < 3;i++){
+        for (int i = 0; i < 3; i++) {
             Vehicle vehicle = new Vehicle.VehiclesBuilder()
                     .transportType(TRANSPORT_TYPE.PRODUCT)
                     .withMaximumCapacity(1000)
@@ -107,30 +107,30 @@ public class SimpleDemo {
         return first;
     }
 
-    public static List<Client> createClients(){
+    public static List<Client> createClients() {
         //first create cargos.
         Queue<Cargo> cargos = new LinkedList<>();
-        for (int i = 0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
             MaterialArgs materialArgs = new MaterialArgs(150);
             Cargo cargo = CargoFactory.getInstance().createCargo(materialArgs);
             cargos.add(cargo);
         }
         //add Persons
         List<Person> peoples = new ArrayList<>();
-        for (int i = 0;i<6;i++){
+        for (int i = 0; i < 6; i++) {
             peoples.add(PersonFactory.getInstance()
                     .createPerson(new EmployeeArgs()));
         }
 
-        for (int i = 0;i<3;i++){
+        for (int i = 0; i < 3; i++) {
             PeopleArgs materialArgs = new PeopleArgs(peoples);
             Cargo cargo = CargoFactory.getInstance().createCargo(materialArgs);
             cargos.add(cargo);
         }
 
         List<Client> clients = new ArrayList<>();
-        for (int i = 0;i <7;i++){
-            Client client = PersonFactory.getInstance().createPerson(new ClientArgs("client"+i,BigDecimal.valueOf(1000000.0),cargos.poll()));
+        for (int i = 0; i < 7; i++) {
+            Client client = PersonFactory.getInstance().createPerson(new ClientArgs("client" + i, BigDecimal.valueOf(1000000.0), cargos.poll()));
             clients.add(client);
         }
 
@@ -158,43 +158,43 @@ public class SimpleDemo {
         Date begin1 = new GregorianCalendar(2012, Calendar.FEBRUARY, 11).getTime();
         Date end1 = new GregorianCalendar(2012, Calendar.FEBRUARY, 12).getTime();
 
-        myCompany.assignTransport(begin1,end1,clients1.poll(),true,100);
+        myCompany.assignTransport(begin1, end1, clients1.poll(), true, 100);
 
         Date begin2 = new GregorianCalendar(2012, Calendar.FEBRUARY, 13).getTime();
         Date end2 = new GregorianCalendar(2012, Calendar.FEBRUARY, 14).getTime();
 
-        myCompany.assignTransport(begin2,end2,clients1.poll(),true,32);
+        myCompany.assignTransport(begin2, end2, clients1.poll(), true, 32);
 
         Date begin3 = new GregorianCalendar(2012, Calendar.FEBRUARY, 15).getTime();
         Date end3 = new GregorianCalendar(2012, Calendar.FEBRUARY, 17).getTime();
 
-        myCompany.assignTransport(begin3,end3,clients1.poll(),true,45);
+        myCompany.assignTransport(begin3, end3, clients1.poll(), true, 45);
 
         Date begin4 = new GregorianCalendar(2012, Calendar.FEBRUARY, 18).getTime();
         Date end4 = new GregorianCalendar(2012, Calendar.FEBRUARY, 19).getTime();
 
-        myCompany.assignTransport(begin4,end4,clients1.poll(),true,78);
+        myCompany.assignTransport(begin4, end4, clients1.poll(), true, 78);
 
         Date begin5 = new GregorianCalendar(2012, Calendar.FEBRUARY, 20).getTime();
         Date end5 = new GregorianCalendar(2012, Calendar.FEBRUARY, 21).getTime();
 
-        myCompany.assignTransport(begin5,end5,clients1.poll(),true,12);
+        myCompany.assignTransport(begin5, end5, clients1.poll(), true, 12);
 
         Date begin6 = new GregorianCalendar(2012, Calendar.FEBRUARY, 23).getTime();
         Date end6 = new GregorianCalendar(2012, Calendar.FEBRUARY, 24).getTime();
 
-        myCompany.assignTransport(begin6,end6,clients1.poll(),true,42);
+        myCompany.assignTransport(begin6, end6, clients1.poll(), true, 42);
 
         Date begin7 = new GregorianCalendar(2012, Calendar.FEBRUARY, 23).getTime();
         Date end7 = new GregorianCalendar(2012, Calendar.FEBRUARY, 24).getTime();
 
-        myCompany.assignTransport(begin7,end7,clients1.poll(),true,42);
+        myCompany.assignTransport(begin7, end7, clients1.poll(), true, 42);
 
         System.out.println(myCompany.reportSumOfMadeTransports() + "\n");
-        System.out.println(myCompany.timesEmployeesDrove()+ "\n");
-        System.out.println(myCompany.reportHowManyTransportsHaveBeenMade()+ "\n");
-        System.out.println(myCompany.earningsOnPeriod(begin3,end7)+ "\n");
-        System.out.println(myCompany.earningsOnPeriodFromEmployee(begin1,end1,employees.get(employees.size()-1))+ "\n");
+        System.out.println(myCompany.timesEmployeesDrove() + "\n");
+        System.out.println(myCompany.reportHowManyTransportsHaveBeenMade() + "\n");
+        System.out.println(myCompany.earningsOnPeriod(begin3, end7) + "\n");
+        System.out.println(myCompany.earningsOnPeriodFromEmployee(begin1, end1, employees.get(employees.size() - 1)) + "\n");
 
         File LocationToWrite = Paths.get("src/main/resources/dummySerialisation.ser").toFile();
         System.out.println("Writing transports to: \"src/main/resources/dummySerialisation.ser\" ");

@@ -325,7 +325,7 @@ public class TransportCompany implements Comparable<TransportCompany> {
         addToEarningsIfEmployeePaysTransport(transport, client, isPayed);
 
         this.addTransport(transport);
-        if (!clients.contains(client)){
+        if (!clients.contains(client)) {
             clients.add(client);
         }
 
