@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
     private List<Person> personArrayList; //persons that have to be transported
 
-    public PeopleArgs(ArrayList<Person> personArrayList) {
+    public PeopleArgs(List<Person> personArrayList) {
         if (Objects.isNull(personArrayList)) {
             this.personArrayList = new ArrayList<>();
         } else {

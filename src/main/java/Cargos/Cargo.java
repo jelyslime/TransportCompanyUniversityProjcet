@@ -2,6 +2,7 @@ package Cargos;
 
 import utility.TRANSPORT_TYPE;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Objects;
  *
  * @see Cargos.CargoNecessaryInformation
  */
-public abstract class Cargo implements CargoNecessaryInformation {
+public abstract class Cargo implements CargoNecessaryInformation, Serializable {
     private final TRANSPORT_TYPE type; //type of the transport
 
     /**
