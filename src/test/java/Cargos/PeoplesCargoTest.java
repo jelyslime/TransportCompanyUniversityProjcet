@@ -8,6 +8,7 @@ import utility.TRANSPORT_TYPE;
 
 import java.util.ArrayList;
 
+import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertEquals;
 
 /**
@@ -97,5 +98,51 @@ public class PeoplesCargoTest {
 
         //assert
         assertEquals(EXPECTED_TYPE, cargo.getType());
+    }
+
+    @Test
+    public void equals_True_ObjectsAreEqual(){
+        //arrange
+        PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
+        PeoplesCargo cargo1 = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
+
+        //act
+        boolean result = cargo.equals(cargo1);
+
+        //assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void equals_False_ObjectsAreNotEqual(){
+        //arrange
+        PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
+        PeoplesCargo cargo1 = new PeoplesCargo(TRANSPORT_TYPE.PRODUCT, EXPECTED_LIST);
+
+        //act
+        boolean result = cargo.equals(cargo1);
+
+        //assert
+        assertFalse(result);
+    }
+
+    @Test
+    public void hashCode_SameHash_EqualObjects(){
+        //arrange
+        PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
+        PeoplesCargo cargo1 = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
+
+        //assert
+        assertEquals(cargo.hashCode(),cargo1.hashCode());
+    }
+
+    @Test
+    public void hashCode_DifferentHash_DifferentObjects(){
+        //arrange
+        PeoplesCargo cargo = new PeoplesCargo(EXPECTED_TYPE, EXPECTED_LIST);
+        PeoplesCargo cargo1 = new PeoplesCargo(TRANSPORT_TYPE.PRODUCT, EXPECTED_LIST);
+
+        //assert
+        assertNotSame(cargo.hashCode(),cargo1.hashCode());
     }
 }

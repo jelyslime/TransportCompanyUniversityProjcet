@@ -3,6 +3,7 @@ package Persons;
 import Cargos.Cargo;
 import Cargos.CargoFactory;
 import Cargos.Factory.MaterialArgs;
+import Persons.Factory.ClientArgs;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -10,8 +11,7 @@ import org.mockito.Mock;
 
 import java.math.BigDecimal;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
  * Unit tests for Employee
@@ -144,6 +144,14 @@ public class ClientTest {
 
         //assert
         assertTrue(toString.contains("name=" + client.getName()));
+    }
+
+    @Test
+    public void ClientArgsNoArgsConstructor_CreateInstance(){
+        ClientArgs args = new ClientArgs();
+
+        //assert
+        assertNotNull(args);
     }
 
 }

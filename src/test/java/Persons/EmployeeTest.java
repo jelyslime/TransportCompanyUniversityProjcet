@@ -1,5 +1,7 @@
 package Persons;
 
+import Persons.Factory.ClientArgs;
+import Persons.Factory.EmployeeArgs;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -7,8 +9,7 @@ import utility.CATEGORY;
 
 import java.math.BigDecimal;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
  * Unit tests for Employee
@@ -136,5 +137,13 @@ public class EmployeeTest {
 
         //assert
         assertTrue(toString.contains("name=" + employee.getName()));
+    }
+
+    @Test
+    public void EmployeeArgsNoArgsConstructor_CreateInstance(){
+        EmployeeArgs args = new EmployeeArgs();
+
+        //assert
+        assertNotNull(args);
     }
 }

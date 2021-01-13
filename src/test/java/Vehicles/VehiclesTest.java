@@ -1,6 +1,6 @@
 package Vehicles;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,16 +28,98 @@ public class VehiclesTest {
     /**
      * Method to initialise parameters to test instance
      */
-    @BeforeClass
-    public static void init() {
+    @Before
+    public void init() {
         vehicle = new Vehicle.VehiclesBuilder()
                 .transportType(TRANSPORT_TYPE.PASSENGER)
                 .vehiclesType(VEHICLE_TYPE.BANICHARKA)
                 .withCategory(CATEGORY.C)
                 .withMaximumCapacity(5)
-                .withPricePerKm(new BigDecimal("3.23"))
+                .withPricePerKm(BigDecimal.valueOf(3.23))
                 .build();
     }
+
+    @Test
+    public void allArgsConstructor_CreateInstance() {
+        //arrange & act
+        Vehicle vehicle1 = new Vehicle(CATEGORY.C, BigDecimal.valueOf(3.23),
+                TRANSPORT_TYPE.PASSENGER, VEHICLE_TYPE.BUS, 7);
+
+        //assert
+        assertNotNull(vehicle1);
+    }
+
+    @Test
+    public void setTransportType_SetsTransportType() {
+        //arrange & act
+        vehicle.setTransportType(TRANSPORT_TYPE.PRODUCT);
+
+        //assert
+        assertEquals(TRANSPORT_TYPE.PRODUCT, vehicle.getTransportType());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setTransportType_ThrowsIllegalArgument_ArgumentIsNull() {
+        //arrange & act
+        vehicle.setTransportType(null);
+
+    }
+
+    @Test
+    public void setVehicleType_SetsVehicleType() {
+        //arrange & act
+        vehicle.setVehicleType(VEHICLE_TYPE.TANK);
+
+        //assert
+        assertEquals(VEHICLE_TYPE.TANK, vehicle.getVehicleType());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setVehicleType_ThrowsIllegalArgument_ArgumentIsNull() {
+        //arrange & act
+        vehicle.setVehicleType(null);
+
+    }
+
+    @Test
+    public void setMaximumCapacity_SetsMaximumCapacity() {
+        //arrange & act
+        vehicle.setMaximumCapacity(3.0);
+
+        //assert
+        assertEquals(3.0, vehicle.getMaximumCapacity());
+    }
+
+    @Test
+    public void setCategoryRequired_SetsCategoryRequired() {
+        //arrange & act
+        vehicle.setCategoryRequired(CATEGORY.B);
+
+        //assert
+        assertEquals(CATEGORY.B, vehicle.getCategoryRequired());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setCategoryRequired_ThrowsIllegalArgument_ArgumentIsNull() {
+        //arrange & act
+        vehicle.setCategoryRequired(null);
+    }
+
+    @Test
+    public void setPricePerKm_SetsPricePerKm(){
+        //arrange & act
+        vehicle.setPricePerKm(BigDecimal.TEN);
+
+        //assert
+        assertEquals(BigDecimal.TEN,vehicle.getPricePerKm());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setPricePerKm_ThrowsIllegalArgument_ArgumentIsNull(){
+        //arrange & act
+        vehicle.setPricePerKm(null);
+    }
+
 
     /**
      * This test checks if withCategory of VehicleBuilder inner class method will set category to Vehicle instance.
@@ -157,7 +239,7 @@ public class VehiclesTest {
                 .build();
 
         //assert
-        assertEquals(4, vehicle4.getVehicleId());
+        assertEquals(20, vehicle4.getVehicleId());
     }
 
     /**

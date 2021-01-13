@@ -21,11 +21,12 @@ public class PeopleArgs implements CargoArgsFor<PeoplesCargo> {
     public PeopleArgs(ArrayList<Person> personArrayList) {
         if (Objects.isNull(personArrayList)) {
             this.personArrayList = new ArrayList<>();
+        }else {
+            this.personArrayList = personArrayList
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
         }
-        this.personArrayList = personArrayList
-                .stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
     }
 
     public PeopleArgs() {

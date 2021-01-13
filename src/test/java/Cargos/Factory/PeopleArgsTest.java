@@ -8,6 +8,7 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 
 /**
  * Unit tests for PeopleArgs.
@@ -16,6 +17,23 @@ import static junit.framework.TestCase.assertEquals;
  */
 @RunWith(JUnit4.class)
 public class PeopleArgsTest {
+
+    @Test
+    public void allArgsConstructor_CreateEmptyList_ArgumentIsNull() {
+        //arrange & act
+        PeopleArgs peopleArgs = new PeopleArgs(null);
+
+        //assert
+        assertEquals(new ArrayList<Person>(), peopleArgs.getPersonArrayList());
+    }
+
+    @Test
+    public void noArgsConstructor_CreateInstance() {
+        PeopleArgs peopleArgs = new PeopleArgs();
+
+        //assert
+        assertNotNull(peopleArgs);
+    }
 
     /**
      * Test checks if getPersonArrayList works as expected
@@ -44,6 +62,16 @@ public class PeopleArgsTest {
 
         //assert
         assertEquals(EXPECTED_LIST, peopleArgs.getPersonArrayList());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setPersonArrayList_ThrowsIllegalArgumentException() {
+        //arrange
+        PeopleArgs peopleArgs = new PeopleArgs(new ArrayList<>());
+
+        //act
+        peopleArgs.setPersonArrayList(null);
+
     }
 
 }
